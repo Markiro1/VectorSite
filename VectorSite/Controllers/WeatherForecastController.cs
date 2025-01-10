@@ -11,6 +11,7 @@ namespace VectorSite.Controllers
         private readonly NpgsqlDbContext context;
 
         public WeatherForecastController(NpgsqlDbContext context) // 3. Щоб передати залежність просто впиши її в конструктор 
+                                                                  // 5. Для кожного нового Controller новий екземпляр класу NpgsqlDbContext
         {
             this.context = context;
         }
