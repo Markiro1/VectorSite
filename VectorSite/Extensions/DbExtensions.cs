@@ -23,7 +23,12 @@ namespace VectorSite.Extensions
             {
                 using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>())
                 {
-                    db.Add(new User() { Name="Kolya", Password="Kolya", Role="Admin" });
+                    var user = new User() { Name = "Kolya", Role = "Admin", Password = "Kolya" };
+                    db.Add(user);
+                    var type = new SubscriptionType() { Name = "Premium" };
+                    db.Add(type);
+                    var currSubs = new Subscription() { StartDate = DateTime.Now.ToUniversalTime(), EndDate = DateTime.MaxValue.ToUniversalTime(), Type = type, User = user };
+                    db.Add(currSubs);
                     db.SaveChanges();
                 }
             }

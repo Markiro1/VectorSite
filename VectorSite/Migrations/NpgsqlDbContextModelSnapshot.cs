@@ -62,19 +62,15 @@ namespace VectorSite.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("SubscriptionTypeId")
+                    b.Property<int>("TypeId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionTypeId");
+                    b.HasIndex("TypeId");
 
                     b.HasIndex("UserId");
 
@@ -116,7 +112,7 @@ namespace VectorSite.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("TypeName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -171,15 +167,19 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.Models.Subscription", b =>
                 {
-                    b.HasOne("VectorSite.Models.SubscriptionType", null)
+                    b.HasOne("VectorSite.Models.SubscriptionType", "Type")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("SubscriptionTypeId");
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("VectorSite.Models.User", "User")
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Type");
 
                     b.Navigation("User");
                 });

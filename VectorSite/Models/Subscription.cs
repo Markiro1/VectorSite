@@ -7,7 +7,7 @@ namespace VectorSite.Models
         [Key]
         public int Id { get; set; }
 
-        public string TypeName { get; set; } = string.Empty;
+        public SubscriptionType Type { get; set; } = null!;
 
         public User User { get; set; } = null!;
 
