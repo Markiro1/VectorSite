@@ -24,7 +24,7 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>()) { db.Database.Migrate(); }
+    using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>()) { db.Database.EnsureDeleted(); db.Database.Migrate(); }
 }
 
 app.Run();

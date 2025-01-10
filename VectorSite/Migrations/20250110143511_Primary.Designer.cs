@@ -12,7 +12,7 @@ using VectorSite.Migrations;
 namespace VectorSite.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
-    [Migration("20250110141344_primary")]
+    [Migration("20250110143511_Primary")]
     partial class Primary
     {
         /// <inheritdoc />
