@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VectorSite.Models;
 
-namespace VectorSite.Migrations
+namespace VectorSite
 {
     public class NpgsqlDbContext : DbContext
     {

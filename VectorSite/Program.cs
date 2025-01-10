@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using VectorSite.Migrations;
+using VectorSite;
+using VectorSite.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +23,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>()) { db.Database.EnsureDeleted(); db.Database.Migrate(); }
-}
+app.MigrateDatabase();
+
+app.InitTestDataToDatabase();
 
 app.Run();
