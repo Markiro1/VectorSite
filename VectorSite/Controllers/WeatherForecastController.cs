@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VectorSite.Migrations;
 
 namespace VectorSite.Controllers
 {
@@ -13,8 +15,9 @@ namespace VectorSite.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, NpgsqlDbContext context)
         {
+            context.Database.EnsureCreated();
             _logger = logger;
         }
 
