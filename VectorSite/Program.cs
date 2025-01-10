@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using VectorSite;
 using VectorSite.Extensions;
 
@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 // Configure components
 
 builder.Services.AddDbContext<NpgsqlDbContext>(options =>
-    options.UseNpgsql("Host=localhost;Port=5432;Database=vectorSite;Username=postgres;Password=123"));
+    options.UseNpgsql(builder.Configuration.GetValue<string>("PostgreConnectionString")));
 
 var app = builder.Build();
 

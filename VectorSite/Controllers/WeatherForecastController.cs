@@ -1,45 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using VectorSite.Models;
 
 namespace VectorSite.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ControllerBase // 4. Кожний код контроллеру виконується в різних потоках, тобто для кожного нового Request новий Controller
     {
-        private static readonly string[] Summaries = new[]
+        // 2. Використовуй такий, якщо хочеш використовувати доступ БД в усіх метода контроллеру
+        private readonly NpgsqlDbContext context;
+
+        public WeatherForecastController(NpgsqlDbContext context) // 3. Щоб передати залежність просто впиши її в конструктор 
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, NpgsqlDbContext context)
-        {
-            context.Database.EnsureCreated();
-            _logger = logger;
-        }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-
-
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            this.context = context;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser([FromBody] User user, [FromServices] NpgsqlDbContext context)
+        public async Task<IActionResult> AddUser([FromBody] User user) // 1. Не використовуй [FromService] більш ніж для одного методу (Для одного методу норм)
         {
             if (user == null)
             {
-                return BadRequest("invalid data");
+                return BadRequest("Invalid data");
             }
 
             context.Users.Add(user);
