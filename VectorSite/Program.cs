@@ -11,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<NpgsqlDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetValue<string>("PostgreConnectionString")));
 
+builder.Services.AddSwaggerGen();
+
 // Якщо будеш додавати нові сервіси є 3 варіанти Lifetime (DependencyInjection)
 // builder.Services.AddSingleton(); - Один екземпляр класу на всю програму. Тобто створится один клас та він буде однаковий для всієї програми.
 // builder.Services.AddScoped(); - Один екземпляр класу для кожого запиту. Тобто створюється один клас та він буде використовуватися для обробки одного запиту. 
@@ -42,5 +44,8 @@ app.MapControllers();
 app.ReloadDatabase();
 
 app.InitTestDataToDatabase();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();
