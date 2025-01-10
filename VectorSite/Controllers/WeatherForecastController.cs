@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VectorSite.Migrations;
+using VectorSite.Models;
 
 namespace VectorSite.Controllers
 {
@@ -24,6 +25,8 @@ namespace VectorSite.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -31,6 +34,20 @@ namespace VectorSite.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser([FromBody] User user, [FromServices] NpgsqlDbContext context)
+        {
+            if (user == null)
+            {
+                return BadRequest("invalid data");
+            }
+
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
+
+            return Ok(user);
         }
     }
 }

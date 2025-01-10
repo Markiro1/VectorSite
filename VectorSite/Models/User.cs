@@ -1,7 +1,10 @@
-﻿namespace VectorSite.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VectorSite.Models
 {
     public class User
     {
+        [Key]
         public string Id { get; set; } = string.Empty;
 
         public string Name { get; set; } = string.Empty;
