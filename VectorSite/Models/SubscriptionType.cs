@@ -5,7 +5,7 @@ namespace VectorSite.Models
     public class SubscriptionType
     {
         [Key]
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; set; }
 
         public string TypeName { get; set; } = string.Empty;
 

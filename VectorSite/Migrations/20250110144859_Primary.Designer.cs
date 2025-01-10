@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using VectorSite;
 
 #nullable disable
 
 namespace VectorSite.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
-    [Migration("20250110143511_Primary")]
+    [Migration("20250110144859_Primary")]
     partial class Primary
     {
         /// <inheritdoc />
@@ -26,17 +27,20 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.Models.Payment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("TypeId")
-                        .HasColumnType("text");
+                    b.Property<int>("TypeId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -49,8 +53,11 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.Models.Subscription", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
@@ -58,15 +65,15 @@ namespace VectorSite.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("SubscriptionTypeId")
-                        .HasColumnType("text");
+                    b.Property<int?>("SubscriptionTypeId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -79,8 +86,11 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.Models.SubscriptionPrice", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
@@ -91,8 +101,8 @@ namespace VectorSite.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("TypeId")
-                        .HasColumnType("text");
+                    b.Property<int>("TypeId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -103,8 +113,11 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.Models.SubscriptionType", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("TypeName")
                         .IsRequired()
@@ -117,8 +130,11 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -141,11 +157,15 @@ namespace VectorSite.Migrations
                 {
                     b.HasOne("VectorSite.Models.SubscriptionType", "Type")
                         .WithMany("Payments")
-                        .HasForeignKey("TypeId");
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("VectorSite.Models.User", "User")
                         .WithMany("Payment")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Type");
 
@@ -160,7 +180,9 @@ namespace VectorSite.Migrations
 
                     b.HasOne("VectorSite.Models.User", "User")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -169,7 +191,9 @@ namespace VectorSite.Migrations
                 {
                     b.HasOne("VectorSite.Models.SubscriptionType", "Type")
                         .WithMany("Prices")
-                        .HasForeignKey("TypeId");
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Type");
                 });

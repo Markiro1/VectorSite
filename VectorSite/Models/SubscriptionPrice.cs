@@ -5,7 +5,7 @@ namespace VectorSite.Models
     public class SubscriptionPrice
     {
         [Key]
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; set; }
 
         public SubscriptionType Type { get; set; } = null!;
 

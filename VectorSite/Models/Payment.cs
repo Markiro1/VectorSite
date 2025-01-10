@@ -5,7 +5,7 @@ namespace VectorSite.Models
     public class Payment
     {
         [Key]
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; set; }
 
         public User User { get; set; } = null!;
 
