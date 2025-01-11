@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using VectorSite;
+using VectorSite.Common.Mappings;
 using VectorSite.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Частина з додаванням сервісів
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+});
 
 builder.Services.AddDbContext<NpgsqlDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetValue<string>("PostgreConnectionString")));
