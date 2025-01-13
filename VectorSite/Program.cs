@@ -1,8 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using VectorSite;
 using VectorSite.Common.Mappings;
 using VectorSite.Extensions;
+using VectorSite.Interfaces.Repositories;
+using VectorSite.Interfaces.Services;
+using VectorSite.Repositories;
+using VectorSite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +24,14 @@ builder.Services.AddDbContext<NpgsqlDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetValue<string>("PostgreConnectionString")));
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<PasswordHasher<object>>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ISubscriptionTypeRepository, SubscriptionTypeRepository>();
 
 // Якщо будеш додавати нові сервіси є 3 варіанти Lifetime (DependencyInjection)
 // builder.Services.AddSingleton(); - Один екземпляр класу на всю програму. Тобто створится один клас та він буде однаковий для всієї програми.

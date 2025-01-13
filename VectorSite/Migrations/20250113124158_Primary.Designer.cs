@@ -12,7 +12,7 @@ using VectorSite;
 namespace VectorSite.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
-    [Migration("20250111091730_Primary")]
+    [Migration("20250113124158_Primary")]
     partial class Primary
     {
         /// <inheritdoc />
@@ -132,11 +132,19 @@ namespace VectorSite.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
 
