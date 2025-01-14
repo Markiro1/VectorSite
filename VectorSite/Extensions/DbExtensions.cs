@@ -11,7 +11,8 @@ namespace VectorSite.Extensions
             {
                 using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>())
                 {
-                    //db.Database.EnsureDeleted();
+                    db.Database.EnsureDeleted();
+                    //db.Database.EnsureCreated();
                     db.Database.Migrate();
                 }
             }

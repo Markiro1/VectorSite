@@ -30,9 +30,9 @@ builder.Services.AddAutoMapper(config =>
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false; 
+    options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false; 
+    options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 3;
     options.Password.RequiredUniqueChars = 0;
 })

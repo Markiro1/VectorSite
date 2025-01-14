@@ -17,5 +17,12 @@ namespace VectorSite
         public DbSet<Subscription> Subscriptions { get; set; }
 
         public DbSet<Payment> Payments { get; set; }
+
+        /*protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<User>().ToTable("Users");
+        }*/
     }
 }

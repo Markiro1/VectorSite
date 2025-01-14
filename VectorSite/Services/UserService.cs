@@ -11,17 +11,18 @@ namespace VectorSite.Services
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
         IUserRepository userRepository
-    ): IUserService
+    ) : IUserService
     {
 
-        public async Task CreateUser(RegisterRequestDTO request, string role) 
-        { 
+        public async Task CreateUser(RegisterRequestDTO request, string role)
+        {
             userRepository.CheckUserExistsByPhoneNumber(request.PhoneNumber);
 
-            var user = new User() { 
+            var user = new User()
+            {
                 UserName = request.Name,
                 Email = request.Email,
-                PhoneNumber = request.PhoneNumber, 
+                PhoneNumber = request.PhoneNumber,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
