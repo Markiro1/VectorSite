@@ -10,7 +10,6 @@ namespace VectorSite.Services
     public class UserService(
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
-        IConfiguration configuration,
         IUserRepository userRepository
     ): IUserService
     {

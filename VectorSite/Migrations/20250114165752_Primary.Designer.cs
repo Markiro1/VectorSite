@@ -12,7 +12,7 @@ using VectorSite;
 namespace VectorSite.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
-    [Migration("20250114161855_Primary")]
+    [Migration("20250114165752_Primary")]
     partial class Primary
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace VectorSite.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

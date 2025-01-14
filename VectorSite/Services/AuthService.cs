@@ -12,7 +12,6 @@ namespace VectorSite.Services
 {
     public class AuthService(
         IUserService userService,
-        IPasswordService passwordService,
         IConfiguration configuration,
         UserManager<User> userManager
     ) : IAuthService
@@ -48,7 +47,7 @@ namespace VectorSite.Services
             var userRoles = await userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Name, user.UserName ?? "Unknown"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
@@ -62,7 +61,7 @@ namespace VectorSite.Services
 
         private string GenerateToken(IEnumerable<Claim> claims)
         {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
