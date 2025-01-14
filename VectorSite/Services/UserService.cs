@@ -1,4 +1,5 @@
-﻿using VectorSite.DTO.AuthControllerDTO;
+﻿using Microsoft.AspNetCore.Identity;
+using VectorSite.DTO.AuthControllerDTO;
 using VectorSite.Exceptions.UserExceptions;
 using VectorSite.Interfaces.Repositories;
 using VectorSite.Interfaces.Services;
@@ -6,42 +7,38 @@ using VectorSite.Models;
 
 namespace VectorSite.Services
 {
-    public class UserService : IUserService
+    public class UserService(
+        UserManager<User> userManager,
+        RoleManager<IdentityRole> roleManager,
+        IConfiguration configuration,
+        IUserRepository userRepository
+    ): IUserService
     {
-        private readonly NpgsqlDbContext context;
 
-        private readonly IUserRepository userRepository;
-
-        private readonly ISubscriptionTypeRepository subscriptionTypeRepository;
-
-        private readonly IPasswordService passwordService;
-
-        public UserService(
-            NpgsqlDbContext context, 
-            IUserRepository userRepository, 
-            ISubscriptionTypeRepository subscriptionTypeRepository, 
-            IPasswordService passwordService)
-        {
-            this.context = context;
-            this.userRepository = userRepository;
-            this.subscriptionTypeRepository = subscriptionTypeRepository;
-            this.passwordService = passwordService;
-        }
-
-        public void CreateUser(RegisterRequestDTO request) 
+        public async Task CreateUser(RegisterRequestDTO request, string role) 
         { 
-           userRepository.CheckUserExistsByPhoneNumber(request.PhoneNumber);
+            userRepository.CheckUserExistsByPhoneNumber(request.PhoneNumber);
 
             var user = new User() { 
-                Name = request.Name, 
+                UserName = request.Name,
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber, 
-                Password = passwordService.HashPassword(request.Password),
-                Role = "user"
+                SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            context.Add(user);
-            context.SaveChanges();
+            var createUserResult = await userManager.CreateAsync(user, request.Password);
+            if (!createUserResult.Succeeded)
+            {
+                throw new UserCreationFailedException();
+            }
+
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+
+            await userManager.AddToRoleAsync(user, role);
+
         }
 
         public User GetUserByEmail(string email)

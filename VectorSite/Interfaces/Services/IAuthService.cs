@@ -4,8 +4,8 @@ namespace VectorSite.Interfaces.Services
 {
     public interface IAuthService
     {
-        void Register(RegisterRequestDTO registerRequest);
+        Task<(int, string)> Registration(RegisterRequestDTO registerRequest, string role);
 
-        string Login(LoginRequestDTO loginRequest);
+        Task<(int, string)> Login(LoginRequestDTO loginRequest);
     }
 }

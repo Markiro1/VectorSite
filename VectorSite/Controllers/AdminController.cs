@@ -17,13 +17,13 @@ namespace VectorSite.Controllers
 
             foreach(var user in users)
             {
-                usersDTO.Add(new ShortAdminUserDTO
+              /*  usersDTO.Add(new ShortAdminUserDTO
                 {
                     Id = user.Id,
                     Name = user.Name,
                     Role = user.Role,
                     CurrentSubscription = user.Subscriptions.FirstOrDefault(s => DateTime.Now >= s.StartDate && DateTime.Now < s.EndDate)?.Type?.Name ?? "Немає"
-                });
+                });*/
             }
 
             return Ok(usersDTO);

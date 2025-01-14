@@ -1,50 +1,66 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VectorSite.DTO.AuthControllerDTO;
-using VectorSite.DTO.ExceptionsDTO;
 using VectorSite.Interfaces.Services;
+using VectorSite.Models;
 
 namespace VectorSite.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController(
+        IAuthService authService,
+        ILogger<AuthController> logger
+    ) : ControllerBase
     {
-        private readonly IAuthService authService;
-
-        public AuthController(IAuthService authService)
-        {
-            this.authService = authService;
-        }
 
         [HttpPost("Register")]
-        public IActionResult Register([FromBody] RegisterRequestDTO request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO request)
         {
             // TODO: Додати створення та відправку посилання на пошту користувача
-            try
+            if (!ModelState.IsValid)
             {
-                authService.Register(request);
-                return Created();
+                return BadRequest("Invalid payload");
             }
-            catch (Exception ex)
+            var (status, message) = await authService.Registration(request, UserRoles.User);
+            if (status == 200)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status201Created);
+            } 
+            else if (status == 409)
+            {
+                return StatusCode(StatusCodes.Status409Conflict);
+            }
+            else
+            {
+                logger.LogError(message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] LoginRequestDTO request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO request)
         {
             // TODO: Змінити в майбутньому респонс
             try
             {
-                var res = authService.Login(request);
-                return Ok(res);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload");
+                }
+                var (status, message) = await authService.Login(request);
+                if (status == 0)
+                {
+                    return BadRequest(message);
+                }
+
+                return Ok(message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest(new ExceptionMessageDTO("Incorrect email or password."));
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            
+
         }
     }
 }

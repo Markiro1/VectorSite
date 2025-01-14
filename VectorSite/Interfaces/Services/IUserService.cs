@@ -5,7 +5,7 @@ namespace VectorSite.Interfaces.Services
 {
     public interface IUserService
     {
-        void CreateUser(RegisterRequestDTO user);
+        Task CreateUser(RegisterRequestDTO user, string role);
 
         User GetUserByEmail(string email);
     }
