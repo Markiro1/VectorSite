@@ -72,6 +72,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISubscriptionTypeRepository, SubscriptionTypeRepository>();
+builder.Services.AddScoped<IMockupService, MockupService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 var app = builder.Build();
 
@@ -85,7 +87,7 @@ app.MapControllers();
 // Migration
 app.ReloadDatabase();
 
-app.InitTestDataToDatabase();
+await app.InitTestDataToDatabase();
 
 app.UseSwagger();
 app.UseSwaggerUI();
