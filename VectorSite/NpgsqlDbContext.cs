@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using VectorSite.Models;
+using VectorSite.DL;
+using VectorSite.DL.Models;
 
 namespace VectorSite
 {
-    public class NpgsqlDbContext : IdentityDbContext<User>
+    public class NpgsqlDbContext : IdentityDbContext<User>, IDbContext
     {
         public NpgsqlDbContext(DbContextOptions<NpgsqlDbContext> options) : base(options)
         {

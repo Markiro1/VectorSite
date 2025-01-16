@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VectorSite.DTO.AuthControllerDTO;
-using VectorSite.Interfaces.Services;
-using VectorSite.Models;
+using VectorSite.BL.DTO.AuthControllerDTO;
+using VectorSite.BL.Interfaces.Services;
+using VectorSite.DL.Models;
 
 namespace VectorSite.Controllers
 {
@@ -25,7 +25,7 @@ namespace VectorSite.Controllers
             if (status == 200)
             {
                 return StatusCode(StatusCodes.Status201Created);
-            } 
+            }
             else if (status == 409)
             {
                 return StatusCode(StatusCodes.Status409Conflict);

@@ -3,10 +3,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using VectorSite.DTO.AuthControllerDTO;
-using VectorSite.Exceptions.UserExceptions;
-using VectorSite.Interfaces.Services;
-using VectorSite.Models;
+using VectorSite.BL.DTO.AuthControllerDTO;
+using VectorSite.BL.Interfaces.Services;
+using VectorSite.DL.Exceptions.UserExceptions;
+using VectorSite.DL.Models;
 
 namespace VectorSite.Services
 {

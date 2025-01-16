@@ -9,7 +9,7 @@ using VectorSite;
 
 #nullable disable
 
-namespace VectorSite.Migrations
+namespace VectorSite.DL.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
     [Migration("20250114165752_Primary")]

@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using VectorSite.Interfaces.Services;
-using VectorSite.Models;
+using VectorSite.BL.Interfaces.Services;
+using VectorSite.DL.Models;
 
 namespace VectorSite.Services
 {

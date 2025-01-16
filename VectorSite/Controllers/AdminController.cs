@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using VectorSite.DTO.AdminControllerDTO;
-using VectorSite.Interfaces.Services;
+using VectorSite.BL.DTO.AdminControllerDTO;
+using VectorSite.BL.Interfaces.Services;
 
 namespace VectorSite.Controllers
 {
@@ -12,7 +11,7 @@ namespace VectorSite.Controllers
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers(int page)
         {
-           var usersList = await adminService.GetAllUsers(page);
+            var usersList = await adminService.GetAllUsers(page);
 
             return Ok(usersList);
         }

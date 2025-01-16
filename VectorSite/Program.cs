@@ -5,12 +5,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
 using VectorSite;
-using VectorSite.Common.Mappings;
+using VectorSite.BL.Interfaces.Services;
+using VectorSite.BL.Services;
+using VectorSite.DL.Common.Mappings;
+using VectorSite.DL.Interfaces.Repositories;
+using VectorSite.DL.Models;
+using VectorSite.DL.Repositories;
 using VectorSite.Extensions;
-using VectorSite.Interfaces.Repositories;
-using VectorSite.Interfaces.Services;
-using VectorSite.Models;
-using VectorSite.Repositories;
 using VectorSite.Services;
 
 var builder = WebApplication.CreateBuilder(args);

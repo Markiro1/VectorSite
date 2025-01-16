@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace VectorSite.Migrations
+namespace VectorSite.DL.Migrations
 {
     /// <inheritdoc />
     public partial class Primary : Migration

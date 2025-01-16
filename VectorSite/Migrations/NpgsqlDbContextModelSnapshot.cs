@@ -8,7 +8,7 @@ using VectorSite;
 
 #nullable disable
 
-namespace VectorSite.Migrations
+namespace VectorSite.DL.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
     partial class NpgsqlDbContextModelSnapshot : ModelSnapshot
