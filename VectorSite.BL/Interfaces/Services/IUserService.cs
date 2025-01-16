@@ -7,6 +7,8 @@ namespace VectorSite.BL.Interfaces.Services
     {
         Task CreateUser(RegisterRequestDTO user, string role);
 
-        User GetUserByEmail(string email);
+        User GetUserById(string id);
+
+        IQueryable<User> GetUsersQuery();
     }
 }

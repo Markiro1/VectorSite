@@ -14,5 +14,7 @@ namespace VectorSite.DL
         public DbSet<Subscription> Subscriptions { get; set; }
 
         public DbSet<Payment> Payments { get; set; }
+
+        public int SaveChanges();
     }
 }

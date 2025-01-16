@@ -12,10 +12,10 @@ namespace VectorSite.DL.Repositories
             this.context = context;
         }
 
-        public SubscriptionType GetTypeByName(string name)
+        public SubscriptionType GetTypeById(int id)
         {
             return context.SubscriptionTypes
-                .First(type => type.Name == name);
+                .First(type => type.Id == id);
         }
     }
 }

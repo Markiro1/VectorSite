@@ -25,6 +25,7 @@ namespace VectorSite.Extensions
             {
                 using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>())
                 {
+                    await db.Database.EnsureDeletedAsync();
                     await db.Database.MigrateAsync();
                 }
             }
@@ -53,6 +54,9 @@ namespace VectorSite.Extensions
 
                     await roleManager.CreateAsync(new IdentityRole("Admin"));
                     await roleManager.CreateAsync(new IdentityRole("User"));
+
+                    await db.SubscriptionTypes.AddAsync(new SubscriptionType() { Name = "BASE", Days = 30 });
+                    await db.SubscriptionTypes.AddAsync(new SubscriptionType() { Name = "PREMIUM", Days = 30 });
 
                     for (var i = 0; i < 10; i++)
                     {

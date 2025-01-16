@@ -7,5 +7,7 @@ namespace VectorSite.BL.Interfaces.Services
         Task<(int, string)> Registration(RegisterRequestDTO registerRequest, string role);
 
         Task<(int, string)> Login(LoginRequestDTO loginRequest);
+
+        string GetUserIdFromToken(string token);
     }
 }

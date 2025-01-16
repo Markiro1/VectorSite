@@ -2,8 +2,8 @@
 {
     public class UserNotFoundException : Exception
     {
-        public UserNotFoundException(string email)
-            : base($"User not found by email: {email}")
+        public UserNotFoundException(string id)
+            : base($"User not found by id: {id}")
         { }
     }
 }

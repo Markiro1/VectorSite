@@ -41,9 +41,15 @@ namespace VectorSite.BL.Services
 
         }
 
-        public User GetUserByEmail(string email)
+        public User GetUserById(string id)
         {
-            return userRepository.GetUserByEmail(email);
+            return userRepository.GetUserById(id);
         }
+
+        public IQueryable<User> GetUsersQuery()
+        {
+            return userRepository.GetUsersQuery();
+        }
+
     }
 }

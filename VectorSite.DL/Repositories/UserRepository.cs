@@ -24,17 +24,23 @@ namespace VectorSite.DL.Repositories
             }
         }
 
-        public User GetUserByEmail(string email)
+        public User GetUserById(string id)
         {
             var user = context.Users
-               .FirstOrDefault(u => u.Email == email);
+               .FirstOrDefault(u => u.Id == id);
 
             if (user == null)
             {
-                throw new UserNotFoundException(email);
+                throw new UserNotFoundException(id);
             }
 
             return user;
+        }
+
+
+        public IQueryable<User> GetUsersQuery()
+        {
+            return context.Users.AsQueryable();
         }
     }
 }

@@ -4,6 +4,6 @@ namespace VectorSite.DL.Interfaces.Repositories
 {
     public interface ISubscriptionTypeRepository
     {
-        SubscriptionType GetTypeByName(string name);
+        SubscriptionType GetTypeById(int id);
     }
 }

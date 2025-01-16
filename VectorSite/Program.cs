@@ -7,6 +7,7 @@ using System.Text;
 using VectorSite;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.BL.Services;
+using VectorSite.DL;
 using VectorSite.DL.Common.Mappings;
 using VectorSite.DL.Interfaces.Repositories;
 using VectorSite.DL.Models;
@@ -16,7 +17,7 @@ using VectorSite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<NpgsqlDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("conn")));
+builder.Services.AddDbContext<IDbContext, NpgsqlDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("conn")));
 
 // Частина з додаванням сервісів
 
@@ -70,6 +71,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<PasswordHasher<object>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<ISubscriptionTypeService, SubscriptionTypeService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISubscriptionTypeRepository, SubscriptionTypeRepository>();
@@ -88,8 +91,8 @@ app.MapControllers();
 // Migration
 //await app.MigrateDatabase();
 
-await app.RecreateDatabase();
-await app.GenerateMockupData();
+//await app.RecreateDatabase();
+//await app.GenerateMockupData();
 app.TestActionToDatabase();
 
 app.UseSwagger();

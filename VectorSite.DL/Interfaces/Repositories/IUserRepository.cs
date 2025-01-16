@@ -4,8 +4,10 @@ namespace VectorSite.DL.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-        User GetUserByEmail(string email);
+        User GetUserById(string id);
 
         void CheckUserExistsByPhoneNumber(string phoneNumber);
+
+        IQueryable<User> GetUsersQuery();
     }
 }

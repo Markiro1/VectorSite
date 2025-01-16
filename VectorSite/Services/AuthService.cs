@@ -37,7 +37,7 @@ namespace VectorSite.Services
 
         public async Task<(int, string)> Login(LoginRequestDTO request)
         {
-            var user = userService.GetUserByEmail(request.Email);
+            var user = userService.GetUsersQuery().FirstOrDefault(user => user.Email!.Equals(request.Email));
 
             if (user == null || !await userManager.CheckPasswordAsync(user, request.Password))
             {
@@ -47,6 +47,7 @@ namespace VectorSite.Services
             var userRoles = await userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>()
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName ?? "Unknown"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
@@ -57,6 +58,24 @@ namespace VectorSite.Services
             }
             string token = GenerateToken(authClaims);
             return (1, token);
+        }
+
+        public string GetUserIdFromToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            if (tokenHandler.CanReadToken(token))
+            {
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+
+                var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+                if (userIdClaim != null)
+                {
+                    return userIdClaim.Value;
+                }
+            }
+
+            throw new SecurityTokenException("Invalid token or user ID not found in token.");
         }
 
         private string GenerateToken(IEnumerable<Claim> claims)
