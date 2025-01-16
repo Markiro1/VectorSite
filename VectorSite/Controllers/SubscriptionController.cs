@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using VectorSite.BL.Interfaces.Services;
 
 namespace VectorSite.Controllers
@@ -16,8 +17,12 @@ namespace VectorSite.Controllers
         {
             try
             {
-                var jwtToken = Request.Headers.Authorization;
-                var userId = authService.GetUserIdFromToken(jwtToken.ToString());
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+                if (userId == null)
+                {
+                    throw new ArgumentNullException("User id is null");
+                }
 
                 subscriptionService.Create(subTypeId, userId);
             }

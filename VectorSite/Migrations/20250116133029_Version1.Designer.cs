@@ -9,11 +9,11 @@ using VectorSite;
 
 #nullable disable
 
-namespace VectorSite.DL.Migrations
+namespace VectorSite.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
-    [Migration("20250114165752_Primary")]
-    partial class Primary
+    [Migration("20250116133029_Version1")]
+    partial class Version1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,7 +157,7 @@ namespace VectorSite.DL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VectorSite.Models.Payment", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -183,7 +183,7 @@ namespace VectorSite.DL.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.Subscription", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.Subscription", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,10 +191,16 @@ namespace VectorSite.DL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPayed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TypeId")
@@ -212,7 +218,7 @@ namespace VectorSite.DL.Migrations
                     b.ToTable("Subscriptions");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.SubscriptionPrice", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.SubscriptionPrice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,13 +245,16 @@ namespace VectorSite.DL.Migrations
                     b.ToTable("SubscriptionPrices");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.SubscriptionType", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.SubscriptionType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Days")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -256,7 +265,7 @@ namespace VectorSite.DL.Migrations
                     b.ToTable("SubscriptionTypes");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.User", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -331,7 +340,7 @@ namespace VectorSite.DL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("VectorSite.Models.User", null)
+                    b.HasOne("VectorSite.DL.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -340,7 +349,7 @@ namespace VectorSite.DL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("VectorSite.Models.User", null)
+                    b.HasOne("VectorSite.DL.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -355,7 +364,7 @@ namespace VectorSite.DL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VectorSite.Models.User", null)
+                    b.HasOne("VectorSite.DL.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -364,22 +373,22 @@ namespace VectorSite.DL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("VectorSite.Models.User", null)
+                    b.HasOne("VectorSite.DL.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VectorSite.Models.Payment", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.Payment", b =>
                 {
-                    b.HasOne("VectorSite.Models.SubscriptionType", "Type")
+                    b.HasOne("VectorSite.DL.Models.SubscriptionType", "Type")
                         .WithMany("Payments")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VectorSite.Models.User", "User")
+                    b.HasOne("VectorSite.DL.Models.User", "User")
                         .WithMany("Payment")
                         .HasForeignKey("UserId");
 
@@ -388,15 +397,15 @@ namespace VectorSite.DL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.Subscription", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.Subscription", b =>
                 {
-                    b.HasOne("VectorSite.Models.SubscriptionType", "Type")
+                    b.HasOne("VectorSite.DL.Models.SubscriptionType", "Type")
                         .WithMany("Subscriptions")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VectorSite.Models.User", "User")
+                    b.HasOne("VectorSite.DL.Models.User", "User")
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId");
 
@@ -405,9 +414,9 @@ namespace VectorSite.DL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.SubscriptionPrice", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.SubscriptionPrice", b =>
                 {
-                    b.HasOne("VectorSite.Models.SubscriptionType", "Type")
+                    b.HasOne("VectorSite.DL.Models.SubscriptionType", "Type")
                         .WithMany("Prices")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -416,7 +425,7 @@ namespace VectorSite.DL.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.SubscriptionType", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.SubscriptionType", b =>
                 {
                     b.Navigation("Payments");
 
@@ -425,7 +434,7 @@ namespace VectorSite.DL.Migrations
                     b.Navigation("Subscriptions");
                 });
 
-            modelBuilder.Entity("VectorSite.Models.User", b =>
+            modelBuilder.Entity("VectorSite.DL.Models.User", b =>
                 {
                     b.Navigation("Payment");
 

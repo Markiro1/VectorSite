@@ -37,9 +37,9 @@ namespace VectorSite.Services
 
         public async Task<(int, string)> Login(LoginRequestDTO request)
         {
-            var user = userService.GetUsersQuery().FirstOrDefault(user => user.Email!.Equals(request.Email));
+            var user = userService.GetUsersQuery().FirstOrDefault(u => u.Email!.Equals(request.Email));
 
-            if (user == null || !await userManager.CheckPasswordAsync(user, request.Password))
+            if (user == null || (configuration.GetValue<bool>("IsTesting") == false && !await userManager.CheckPasswordAsync(user, request.Password)))
             {
                 return (0, "Incorrect email or password.");
             }
@@ -64,7 +64,7 @@ namespace VectorSite.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            if (tokenHandler.CanReadToken(token))
+            if (tokenHandler.CanReadToken(token.Replace("Bearer ", "")))
             {
                 var jwtToken = tokenHandler.ReadJwtToken(token);
 

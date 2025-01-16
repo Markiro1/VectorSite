@@ -8,7 +8,7 @@ using VectorSite;
 
 #nullable disable
 
-namespace VectorSite.DL.Migrations
+namespace VectorSite.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
     partial class NpgsqlDbContextModelSnapshot : ModelSnapshot
@@ -188,7 +188,7 @@ namespace VectorSite.DL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsCancelled")
@@ -197,7 +197,7 @@ namespace VectorSite.DL.Migrations
                     b.Property<bool>("IsPayed")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TypeId")
