@@ -85,9 +85,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Migration
-app.ReloadDatabase();
+//await app.MigrateDatabase();
 
-await app.InitTestDataToDatabase();
+await app.RecreateDatabase();
+await app.GenerateMockupData();
+app.TestActionToDatabase();
 
 app.UseSwagger();
 app.UseSwaggerUI();

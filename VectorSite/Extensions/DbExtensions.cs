@@ -1,28 +1,47 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 using VectorSite.Interfaces.Services;
 using VectorSite.Models;
-using VectorSite.Services;
 
 namespace VectorSite.Extensions
 {
     public static class DbExtensions
     {
-        public static void ReloadDatabase(this WebApplication app)
+        public async static Task RecreateDatabase(this WebApplication app)
         {
             using (var scope = app.Services.CreateScope())
             {
                 using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>())
                 {
-                    db.Database.EnsureDeleted();
-                    db.Database.EnsureCreated();
-                    //db.Database.Migrate();
+                    await db.Database.EnsureDeletedAsync();
+                    await db.Database.EnsureCreatedAsync();
                 }
             }
         }
 
-        public static async Task InitTestDataToDatabase(this WebApplication app)
+        public async static Task MigrateDatabase(this WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>())
+                {
+                    await db.Database.MigrateAsync();
+                }
+            }
+        }
+
+        public static void TestActionToDatabase(this WebApplication app)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                using (var db = scope.ServiceProvider.GetRequiredService<NpgsqlDbContext>())
+                {
+
+                }
+            }
+        }
+
+        public static async Task GenerateMockupData(this WebApplication app)
         {
             using (var scope = app.Services.CreateScope())
             {
