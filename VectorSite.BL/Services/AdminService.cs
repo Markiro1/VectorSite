@@ -11,7 +11,7 @@ namespace VectorSite.BL.Services
     {
         public async Task<IEnumerable<ShortAdminUserDTO>> GetAllUsers(int page)
         {
-            var users = await context.Users.OrderBy(u => u.Id).Skip(page * 10).Take(10).Include(u => u.Subscriptions).ThenInclude(s => s.Type).ToListAsync();
+            var users = await context.Users.OrderBy(u => u.Id).Skip(page * 10).Take(10).Include(u => u.Subscriptions).ThenInclude(s => s.SubType).ToListAsync();
             var usersDTO = new List<ShortAdminUserDTO>();
 
             foreach (var user in users)
@@ -22,7 +22,7 @@ namespace VectorSite.BL.Services
                     Name = user.UserName ?? "Немає",
                     Email = user.Email ?? "Немає",
                     Role = (await userManager.GetRolesAsync(user)).FirstOrDefault() ?? "Немає",
-                    CurrentSubscription = user.Subscriptions.FirstOrDefault(s => DateTime.Now >= s.StartDate && DateTime.Now < s.EndDate)?.Type?.Name ?? "Немає"
+                    CurrentSubscription = user.Subscriptions.FirstOrDefault(s => DateTime.Now >= s.StartDate && DateTime.Now < s.EndDate)?.SubType?.Name ?? "Немає"
                 });
             }
 

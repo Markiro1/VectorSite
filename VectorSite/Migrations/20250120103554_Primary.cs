@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VectorSite.Migrations
 {
     /// <inheritdoc />
-    public partial class Version1 : Migration
+    public partial class Primary : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -225,7 +225,7 @@ namespace VectorSite.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TypeId = table.Column<int>(type: "integer", nullable: false),
+                    SubTypeId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     IsCancelled = table.Column<bool>(type: "boolean", nullable: false),
                     IsPayed = table.Column<bool>(type: "boolean", nullable: false),
@@ -241,8 +241,8 @@ namespace VectorSite.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Subscriptions_SubscriptionTypes_TypeId",
-                        column: x => x.TypeId,
+                        name: "FK_Subscriptions_SubscriptionTypes_SubTypeId",
+                        column: x => x.SubTypeId,
                         principalTable: "SubscriptionTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -301,9 +301,9 @@ namespace VectorSite.Migrations
                 column: "TypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_TypeId",
+                name: "IX_Subscriptions_SubTypeId",
                 table: "Subscriptions",
-                column: "TypeId");
+                column: "SubTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_UserId",

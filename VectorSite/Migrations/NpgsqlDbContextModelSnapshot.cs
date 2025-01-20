@@ -200,7 +200,7 @@ namespace VectorSite.Migrations
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TypeId")
+                    b.Property<int>("SubTypeId")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
@@ -208,7 +208,7 @@ namespace VectorSite.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("SubTypeId");
 
                     b.HasIndex("UserId");
 
@@ -396,9 +396,9 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.DL.Models.Subscription", b =>
                 {
-                    b.HasOne("VectorSite.DL.Models.SubscriptionType", "Type")
+                    b.HasOne("VectorSite.DL.Models.SubscriptionType", "SubType")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("SubTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -406,7 +406,7 @@ namespace VectorSite.Migrations
                         .WithMany("Subscriptions")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Type");
+                    b.Navigation("SubType");
 
                     b.Navigation("User");
                 });

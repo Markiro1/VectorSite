@@ -8,6 +8,12 @@ namespace VectorSite.BL.Services
         ISubscriptionTypeRepository subscriptionTypeRepository
     ) : ISubscriptionTypeService
     {
+        public List<SubscriptionType> GetAllSubscriptionType()
+        {
+            //TODO: Вирішити проблему з цикличною залежністю
+            throw new NotImplementedException();
+        }
+
         public SubscriptionType GetTypeById(int id)
         {
             return subscriptionTypeRepository.GetTypeById(id);
