@@ -10,4 +10,8 @@
     <ProjectReference Include="..\VectorSite.DL\VectorSite.DL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uknown\Commands\NewFolder\" />
+  </ItemGroup>
+
 </Project>

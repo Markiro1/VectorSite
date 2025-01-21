@@ -4,14 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using VectorSite;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.BL.Services;
 using VectorSite.DL;
 using VectorSite.DL.Common.Mappings;
-using VectorSite.DL.Interfaces.Repositories;
 using VectorSite.DL.Models;
-using VectorSite.DL.Repositories;
 using VectorSite.Extensions;
 using VectorSite.Services;
 
@@ -21,7 +20,8 @@ builder.Services.AddDbContext<IDbContext, NpgsqlDbContext>(options => options.Us
 
 // Частина з додаванням сервісів
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 
 builder.Services.AddAutoMapper(config =>
 {
@@ -73,10 +73,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<ISubscriptionTypeService, SubscriptionTypeService>();
+builder.Services.AddScoped<ISubscriptionPriceService, SubscriptionPriceService>();
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-builder.Services.AddScoped<ISubscriptionTypeRepository, SubscriptionTypeRepository>();
 builder.Services.AddScoped<IMockupService, MockupService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 

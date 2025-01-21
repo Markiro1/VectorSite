@@ -10,6 +10,7 @@ namespace VectorSite
     {
         public NpgsqlDbContext(DbContextOptions<NpgsqlDbContext> options) : base(options)
         {
+
         }
 
         public DbSet<SubscriptionType> SubscriptionTypes { get; set; }

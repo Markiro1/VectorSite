@@ -1,11 +1,16 @@
-﻿using VectorSite.DL.Models;
+﻿using VectorSite.BL.DTO.SubscriptionTypeControllerDTO;
+using VectorSite.DL.Models;
 
 namespace VectorSite.BL.Interfaces.Services
 {
     public interface ISubscriptionTypeService
     {
-        SubscriptionType GetTypeById(int id);
+        SubscriptionType GetById(int id);
 
-        List<SubscriptionType> GetAllSubscriptionType();
+        List<SubscriptionType> GetAll();
+
+        void Create(SubscriptionTypeCreateDTO type);
+
+        void Update(int typeId, SubscriptionTypeUpdateDTO updateDTO);
     }
 }

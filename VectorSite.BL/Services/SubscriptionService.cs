@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using VectorSite.BL.DTO.SubscriptionControllerDTO;
 using VectorSite.BL.DTO.SubscriptionTypeControllerDTO;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
+using VectorSite.DL.Exceptions.SubscriptionExceptios;
 using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;
 using VectorSite.DL.Exceptions.UserExceptions;
-using VectorSite.DL.Interfaces.Repositories;
 using VectorSite.DL.Models;
 
 namespace VectorSite.BL.Services
@@ -13,7 +13,6 @@ namespace VectorSite.BL.Services
     public class SubscriptionService(
         IUserService userService,
         ISubscriptionTypeService subscriptionTypeService,
-        ISubscriptionRepository subscriptionRepository,
         IDbContext context
     ) : ISubscriptionService
     {
@@ -26,7 +25,7 @@ namespace VectorSite.BL.Services
                 throw new UserNotFoundException(userId);
             }
 
-            var subType = subscriptionTypeService.GetTypeById(subTypeId);
+            var subType = subscriptionTypeService.GetById(subTypeId);
             if (subType == null)
             {
                 throw new SubscriptionTypeNotFoundException(subTypeId);
@@ -45,7 +44,10 @@ namespace VectorSite.BL.Services
 
         public List<SubscriptionDTO> GetAllSubs()
         {
-            List<Subscription> subs = subscriptionRepository.GetAllSubs();
+            List<Subscription> subs = context?.Subscriptions
+                .Include(s => s.SubType)
+                .Include(s => s.User)
+                .ToList() ?? [];
 
             List<SubscriptionDTO> subDTOs = subs.Select(sub => new SubscriptionDTO
             {
@@ -62,7 +64,13 @@ namespace VectorSite.BL.Services
 
         public SubscriptionWithDetailsDTO GetSubscriptionByUserId(string userId)
         {
-            var sub = subscriptionRepository.GetSubscriptionByUserId(userId);
+            var sub = context.Subscriptions
+                .Include(s => s.SubType)
+                .FirstOrDefault(s => s.User.Id.Equals(userId));
+            if (sub == null)
+            {
+                throw new SubscriptionNotFoundException(userId);
+            }
 
             var subType = new SubscriptionTypeDTO
             {
@@ -86,34 +94,28 @@ namespace VectorSite.BL.Services
         //TODO: Змінити це чи взагалі видалити, бо херня (Та й нахер треба)
         public void Update(int subId, SubscriptionUpdateDTO updateDTO)
         {
-            using (var transaction = context.BeginTransaction())
+            var sub = context.Subscriptions
+                .Include(s => s.SubType)
+                .FirstOrDefault(s => s.Id == subId);
+
+            if (sub == null)
             {
-                try
-                {       
-                    var sub = subscriptionRepository.GetSubscriptionById(subId);
-
-                    if (updateDTO.IsCancelled.HasValue)
-                        sub.IsCancelled = updateDTO.IsCancelled.Value;
-
-                    if (updateDTO.IsPayed.HasValue)
-                        sub.IsPayed = updateDTO.IsPayed.Value;
-
-                    if (updateDTO.StartDate.HasValue)
-                        sub.StartDate = updateDTO.StartDate.Value;
-
-                    if (updateDTO.EndDate.HasValue)
-                        sub.EndDate = updateDTO.EndDate.Value;
-
-                    context.SaveChanges();
-
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw new Exception($"Error updating subscription: {ex.Message}");
-                }
+                throw new SubscriptionNotFoundException(subId);
             }
+
+            if (updateDTO.IsCancelled.HasValue)
+                sub.IsCancelled = updateDTO.IsCancelled.Value;
+
+            if (updateDTO.IsPayed.HasValue)
+                sub.IsPayed = updateDTO.IsPayed.Value;
+
+            if (updateDTO.StartDate.HasValue)
+                sub.StartDate = updateDTO.StartDate.Value;
+
+            if (updateDTO.EndDate.HasValue)
+                sub.EndDate = updateDTO.EndDate.Value;
+
+            context.SaveChanges();
         }
     }
 }

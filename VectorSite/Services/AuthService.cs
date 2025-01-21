@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using VectorSite.BL.DTO.AuthControllerDTO;
 using VectorSite.BL.Interfaces.Services;
+using VectorSite.DL;
 using VectorSite.DL.Exceptions.UserExceptions;
 using VectorSite.DL.Models;
 
@@ -13,7 +14,8 @@ namespace VectorSite.Services
     public class AuthService(
         IUserService userService,
         IConfiguration configuration,
-        UserManager<User> userManager
+        UserManager<User> userManager,
+        IDbContext context
     ) : IAuthService
     {
 
@@ -37,7 +39,7 @@ namespace VectorSite.Services
 
         public async Task<(int, string)> Login(LoginRequestDTO request)
         {
-            var user = userService.GetUsersQuery().FirstOrDefault(u => u.Email!.Equals(request.Email));
+            var user = context.Users.FirstOrDefault(u => u.Email!.Equals(request.Email));
 
             if (user == null || (configuration.GetValue<bool>("IsTesting") == false && !await userManager.CheckPasswordAsync(user, request.Password)))
             {

@@ -35,6 +35,20 @@ namespace VectorSite.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        [HttpPost("Update")]
+        public IActionResult Update([FromQuery] int subId, [FromBody] SubscriptionUpdateDTO updateDTO)
+        {
+            try
+            {
+                subscriptionService.Update(subId, updateDTO);
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ExceptionMessageDTO(ex.Message));
+            }
+        }
+
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
@@ -63,20 +77,6 @@ namespace VectorSite.Controllers
 
                 var sub = subscriptionService.GetSubscriptionByUserId(userId);
                 return Ok(sub);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ExceptionMessageDTO(ex.Message));
-            }
-        }
-
-        [HttpPatch("Update")]
-        public IActionResult Update([FromQuery] int subId, [FromBody] SubscriptionUpdateDTO updateDTO)
-        {
-            try
-            {
-                subscriptionService.Update(subId, updateDTO);
-                return StatusCode(StatusCodes.Status204NoContent);
             }
             catch (Exception ex)
             {

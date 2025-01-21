@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using VectorSite.BL.DTO.AuthControllerDTO;
 using VectorSite.BL.Interfaces.Services;
+using VectorSite.DL;
 using VectorSite.DL.Exceptions.UserExceptions;
-using VectorSite.DL.Interfaces.Repositories;
 using VectorSite.DL.Models;
 
 namespace VectorSite.BL.Services
@@ -10,13 +10,19 @@ namespace VectorSite.BL.Services
     public class UserService(
         UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
-        IUserRepository userRepository
+        IDbContext context
     ) : IUserService
     {
 
         public async Task CreateUser(RegisterRequestDTO request, string role)
         {
-            userRepository.CheckUserExistsByPhoneNumber(request.PhoneNumber);
+            bool userExists = context.Users
+              .Any(u => u.PhoneNumber == request.PhoneNumber);
+
+            if (userExists)
+            {
+                throw new UserAlreadyExistException(request.PhoneNumber);
+            }
 
             var user = new User()
             {
@@ -43,13 +49,15 @@ namespace VectorSite.BL.Services
 
         public User GetUserById(string id)
         {
-            return userRepository.GetUserById(id);
-        }
+            var user = context.Users
+               .FirstOrDefault(u => u.Id == id);
 
-        public IQueryable<User> GetUsersQuery()
-        {
-            return userRepository.GetUsersQuery();
-        }
+            if (user == null)
+            {
+                throw new UserNotFoundException(id);
+            }
 
+            return user;
+        }
     }
 }
