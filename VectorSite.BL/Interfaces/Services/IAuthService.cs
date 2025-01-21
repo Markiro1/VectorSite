@@ -1,4 +1,4 @@
-﻿using VectorSite.BL.DTO.AuthControllerDTO;
+﻿using VectorSite.BL.DTO.AuthControllerDTO.Request;
 
 namespace VectorSite.BL.Interfaces.Services
 {

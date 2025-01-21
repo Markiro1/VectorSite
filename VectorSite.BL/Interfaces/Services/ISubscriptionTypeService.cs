@@ -1,4 +1,4 @@
-﻿using VectorSite.BL.DTO.SubscriptionTypeControllerDTO;
+﻿using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request;
 using VectorSite.DL.Models;
 
 namespace VectorSite.BL.Interfaces.Services
@@ -9,8 +9,8 @@ namespace VectorSite.BL.Interfaces.Services
 
         List<SubscriptionType> GetAll();
 
-        void Create(SubscriptionTypeCreateDTO type);
+        void Create(SubTypeCreateRequestDTO type);
 
-        void Update(int typeId, SubscriptionTypeUpdateDTO updateDTO);
+        void Update(int typeId, SubTypeUpdateRequestDTO updateDTO);
     }
 }

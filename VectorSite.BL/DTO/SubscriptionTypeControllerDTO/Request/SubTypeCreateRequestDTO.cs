@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VectorSite.BL.DTO.SubscriptionTypeControllerDTO
+namespace VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request
 {
-    public class SubscriptionTypeCreateDTO
+    public class SubTypeCreateRequestDTO
     {
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; } = string.Empty;

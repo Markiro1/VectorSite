@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VectorSite.BL.DTO.ExceptionsDTO;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO;
+using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;
 
@@ -13,7 +13,7 @@ namespace VectorSite.Controllers
     ) : ControllerBase
     {
         [HttpPost("Create")]
-        public IActionResult Create([FromBody] SubscriptionTypeCreateDTO type)
+        public IActionResult Create([FromBody] SubTypeCreateRequestDTO type)
         {
             if (!ModelState.IsValid)
             {
@@ -36,7 +36,7 @@ namespace VectorSite.Controllers
         }
 
         [HttpPost("Update")]
-        public IActionResult Update([FromQuery] int typeId, [FromBody] SubscriptionTypeUpdateDTO updateDTO)
+        public IActionResult Update([FromQuery] int typeId, [FromBody] SubTypeUpdateRequestDTO updateDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -47,6 +47,10 @@ namespace VectorSite.Controllers
             {
                 subscriptionTypeService.Update(typeId, updateDTO);
                 return StatusCode(StatusCodes.Status204NoContent);
+            }
+            catch (SubscriptionTypeNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ExceptionMessageDTO(ex.Message));
             }
             catch (Exception ex)
             {

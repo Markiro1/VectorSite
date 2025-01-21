@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VectorSite.BL.DTO.SubscriptionPriceControllerDTO
+namespace VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Request
 {
-    public class SubscriptionPriceCreateDTO
+    public class SubPriceCreateRequestDTO
     {
         [Required(ErrorMessage = "Type id is required")]
         public int SubTypeId { get; set; }

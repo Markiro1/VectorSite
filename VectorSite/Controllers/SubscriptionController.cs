@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using VectorSite.BL.DTO.ExceptionsDTO;
-using VectorSite.BL.DTO.SubscriptionControllerDTO;
+using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 
 namespace VectorSite.Controllers
@@ -36,7 +37,7 @@ namespace VectorSite.Controllers
         }
 
         [HttpPost("Update")]
-        public IActionResult Update([FromQuery] int subId, [FromBody] SubscriptionUpdateDTO updateDTO)
+        public IActionResult Update([FromQuery] int subId, [FromBody] SubUpdateRequestDTO updateDTO)
         {
             try
             {
@@ -54,7 +55,7 @@ namespace VectorSite.Controllers
         {
             try
             {
-                var subsList = subscriptionService.GetAllSubs();
+                List<SubResponseDTO> subsList = subscriptionService.GetAllSubs();
                 return Ok(subsList);
             }
             catch (Exception ex)
@@ -75,7 +76,7 @@ namespace VectorSite.Controllers
                     throw new ArgumentNullException("User id is null");
                 }
 
-                var sub = subscriptionService.GetSubscriptionByUserId(userId);
+                SubWithDetailsResponseDTO sub = subscriptionService.GetByUserId(userId);
                 return Ok(sub);
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using VectorSite.BL.DTO.SubscriptionControllerDTO;
+﻿using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
 
 namespace VectorSite.BL.Interfaces.Services
 {
@@ -6,11 +7,11 @@ namespace VectorSite.BL.Interfaces.Services
     {
         void Create(int subTypeId, string userId);
 
-        void Update(int subId, SubscriptionUpdateDTO updateDTO); //Працює не правильно
+        void Update(int subId, SubUpdateRequestDTO updateDTO); //Працює не правильно
 
-        List<SubscriptionDTO> GetAllSubs();
+        List<SubResponseDTO> GetAllSubs();
 
-        SubscriptionWithDetailsDTO GetSubscriptionByUserId(string userId);
+        SubWithDetailsResponseDTO GetByUserId(string userId);
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VectorSite.BL.DTO.AuthControllerDTO;
+using VectorSite.BL.DTO.AuthControllerDTO.Request;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL.Models;
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO;
+using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;
@@ -11,7 +11,7 @@ namespace VectorSite.BL.Services
         IDbContext context
     ) : ISubscriptionTypeService
     {
-        public void Create(SubscriptionTypeCreateDTO type)
+        public void Create(SubTypeCreateRequestDTO type)
         {
             var newType = new SubscriptionType
             {
@@ -39,11 +39,18 @@ namespace VectorSite.BL.Services
 
         public SubscriptionType GetById(int id)
         {
-            return context.SubscriptionTypes
+            var type = context.SubscriptionTypes
                 .First(type => type.Id == id);
+
+            if (type == null)
+            {
+                throw new SubscriptionTypeNotFoundException(id);
+            }
+
+            return type;
         }
 
-        public void Update(int typeId, SubscriptionTypeUpdateDTO updateDTO)
+        public void Update(int typeId, SubTypeUpdateRequestDTO updateDTO)
         {
             var type = GetById(typeId);
 

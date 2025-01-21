@@ -19,9 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<IDbContext, NpgsqlDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("conn")));
 
 // Частина з додаванням сервісів
-
-builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
+builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(config =>
 {

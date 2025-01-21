@@ -1,9 +1,9 @@
 ﻿using VectorSite.DL.Common.Mappings;
 using VectorSite.DL.Models;
 
-namespace VectorSite.BL.DTO.SubscriptionControllerDTO
+namespace VectorSite.BL.DTO.SubscriptionControllerDTO.Response
 {
-    public class SubscriptionDTO : IMapWith<Subscription>
+    public class SubResponseDTO : IMapWith<Subscription>
     {
         public int TypeId { get; set; }
 

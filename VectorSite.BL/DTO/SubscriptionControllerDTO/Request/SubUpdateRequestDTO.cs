@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace VectorSite.BL.DTO.SubscriptionControllerDTO
+﻿namespace VectorSite.BL.DTO.SubscriptionControllerDTO.Request
 {
-    public class SubscriptionUpdateDTO
+    public class SubUpdateRequestDTO
     {
         public int? SubTypeId { get; set; } = null;
 

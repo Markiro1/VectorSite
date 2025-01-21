@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using VectorSite.BL.DTO.SubscriptionControllerDTO;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
 using VectorSite.BL.DTO.SubscriptionTypeControllerDTO;
+using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.SubscriptionExceptios;
@@ -13,7 +16,8 @@ namespace VectorSite.BL.Services
     public class SubscriptionService(
         IUserService userService,
         ISubscriptionTypeService subscriptionTypeService,
-        IDbContext context
+        IDbContext context,
+        IMapper mapper
     ) : ISubscriptionService
     {
         // TODO: Додати логіку в майбутньому, щоб виключати останню підписку (IsCancelled)
@@ -42,14 +46,14 @@ namespace VectorSite.BL.Services
         }
 
 
-        public List<SubscriptionDTO> GetAllSubs()
+        public List<SubResponseDTO> GetAllSubs()
         {
             List<Subscription> subs = context?.Subscriptions
                 .Include(s => s.SubType)
                 .Include(s => s.User)
                 .ToList() ?? [];
 
-            List<SubscriptionDTO> subDTOs = subs.Select(sub => new SubscriptionDTO
+            List<SubResponseDTO> subDTOs = subs.Select(sub => new SubResponseDTO
             {
                 TypeId = sub.SubType.Id,
                 UserId = sub.User.Id,
@@ -62,37 +66,26 @@ namespace VectorSite.BL.Services
             return subDTOs;
         }
 
-        public SubscriptionWithDetailsDTO GetSubscriptionByUserId(string userId)
+        public SubWithDetailsResponseDTO GetByUserId(string userId)
         {
             var sub = context.Subscriptions
                 .Include(s => s.SubType)
+                    .ThenInclude(t => t.Payments)
+                .Include(s => s.SubType)
+                    .ThenInclude(p => p.Prices)
                 .FirstOrDefault(s => s.User.Id.Equals(userId));
             if (sub == null)
             {
                 throw new SubscriptionNotFoundException(userId);
             }
 
-            var subType = new SubscriptionTypeDTO
-            {
-                Id = sub.SubType.Id,
-                Name = sub.SubType.Name,
-                Days = sub.SubType.Days,
-                Payments = sub.SubType.Payments,
-                Prices = sub.SubType.Prices
-            };
+            SubTypeResponseDTO subType = mapper.Map<SubTypeResponseDTO>(sub.SubType);
 
-            return new SubscriptionWithDetailsDTO
-            {
-                SubType = subType,
-                IsCancelled = sub.IsCancelled,
-                IsPayed = sub.IsPayed,
-                StartDate = sub.StartDate,
-                EndDate = sub.EndDate,
-            };
+            return mapper.Map<SubWithDetailsResponseDTO>(subType);
         }
 
         //TODO: Змінити це чи взагалі видалити, бо херня (Та й нахер треба)
-        public void Update(int subId, SubscriptionUpdateDTO updateDTO)
+        public void Update(int subId, SubUpdateRequestDTO updateDTO)
         {
             var sub = context.Subscriptions
                 .Include(s => s.SubType)

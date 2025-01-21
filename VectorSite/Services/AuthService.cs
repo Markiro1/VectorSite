@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using VectorSite.BL.DTO.AuthControllerDTO;
+using VectorSite.BL.DTO.AuthControllerDTO.Request;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.UserExceptions;

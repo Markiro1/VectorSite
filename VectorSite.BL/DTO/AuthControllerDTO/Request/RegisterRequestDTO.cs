@@ -1,4 +1,4 @@
-﻿namespace VectorSite.BL.DTO.AuthControllerDTO
+﻿namespace VectorSite.BL.DTO.AuthControllerDTO.Request
 {
     public class RegisterRequestDTO
     {

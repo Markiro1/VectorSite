@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Uknown\Commands\NewFolder\" />
+    <Folder Include="DTO\PaymentControllerDTO\Request\" />
   </ItemGroup>
 
 </Project>

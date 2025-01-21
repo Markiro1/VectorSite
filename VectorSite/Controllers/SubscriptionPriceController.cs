@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VectorSite.BL.DTO.ExceptionsDTO;
-using VectorSite.BL.DTO.SubscriptionPriceControllerDTO;
+using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Request;
 using VectorSite.BL.Interfaces.Services;
+using VectorSite.DL.Exceptions.SubscriptionPriceExceptions;
+using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;
 
 namespace VectorSite.Controllers
 {
@@ -12,7 +14,7 @@ namespace VectorSite.Controllers
     ) : ControllerBase
     {
         [HttpPost("Create")]
-        public IActionResult Create([FromBody] SubscriptionPriceCreateDTO priceDTO)
+        public IActionResult Create([FromBody] SubPriceCreateRequestDTO request)
         {
             if (!ModelState.IsValid)
             {
@@ -21,7 +23,7 @@ namespace VectorSite.Controllers
 
             try
             {
-                subscriptionPriceService.Create(priceDTO);
+                subscriptionPriceService.Create(request);
                 return StatusCode(StatusCodes.Status201Created);
             }
             catch (Exception ex)
@@ -30,13 +32,17 @@ namespace VectorSite.Controllers
             }
         }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById([FromQuery] int priceId)
+        [HttpPost("Update")]
+        public IActionResult Update([FromQuery] int priceId, [FromBody] SubPriceUpdateRequestDTO request)
         {
             try
             {
-                var price = subscriptionPriceService.GetById(priceId);
-                return Ok(price);
+                subscriptionPriceService.Update(priceId, request);
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            catch (Exception ex) when (ex is SubscriptionPriceNotFoundException || ex is SubscriptionTypeNotFoundException)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ExceptionMessageDTO(ex.Message));
             }
             catch (Exception ex)
             {
@@ -51,6 +57,20 @@ namespace VectorSite.Controllers
             {
                 var prices = subscriptionPriceService.GetAll();
                 return Ok(prices);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ExceptionMessageDTO(ex.Message));
+            }
+        }
+
+        [HttpGet("GetById")]
+        public IActionResult GetById([FromQuery] int priceId)
+        {
+            try
+            {
+                var price = subscriptionPriceService.GetById(priceId);
+                return Ok(price);
             }
             catch (Exception ex)
             {
