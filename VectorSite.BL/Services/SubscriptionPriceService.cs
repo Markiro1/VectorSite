@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
 using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.SubscriptionPriceExceptions;
@@ -9,7 +13,8 @@ using VectorSite.DL.Models;
 namespace VectorSite.BL.Services
 {
     public class SubscriptionPriceService(
-        IDbContext context
+        IDbContext context,
+        IMapper mapper
     ) : ISubscriptionPriceService
     {
         public void Create(SubPriceCreateRequestDTO priceDTO)
@@ -29,23 +34,26 @@ namespace VectorSite.BL.Services
             context.SaveChanges();
         }
 
-        public List<SubscriptionPrice> GetAll()
+        public List<SubPriceWithDetailsResponseDTO> GetAll()
         {
             return context.SubscriptionPrices
                .Include(p => p.Type)
+               .ProjectTo<SubPriceWithDetailsResponseDTO>(mapper.ConfigurationProvider)
                .ToList();
         }
 
-        public SubscriptionPrice GetById(int priceId)
+        public SubPriceWithDetailsResponseDTO GetById(int priceId)
         {
             var price = context.SubscriptionPrices
+                .Include(p => p.Type)
                 .FirstOrDefault(p => p.Id == priceId);
 
             if (price == null)
             {
                 throw new SubscriptionPriceNotFoundException(priceId);
             }
-            return price;
+
+            return mapper.Map<SubPriceWithDetailsResponseDTO>(price);
         }
 
         public void Update(int priceId, SubPriceUpdateRequestDTO priceDTO)

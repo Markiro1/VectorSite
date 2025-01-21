@@ -14,10 +14,7 @@ namespace VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<SubscriptionPrice, SubPriceResponseDTO>()
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
-                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate))
-                .ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate));
+            profile.CreateMap<SubscriptionPrice, SubPriceResponseDTO>();
         }
     }
 }

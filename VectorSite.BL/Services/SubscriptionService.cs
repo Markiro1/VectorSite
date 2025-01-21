@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
 using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO;
 using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
@@ -29,7 +28,7 @@ namespace VectorSite.BL.Services
                 throw new UserNotFoundException(userId);
             }
 
-            var subType = subscriptionTypeService.GetById(subTypeId);
+            var subType = context.SubscriptionTypes.FirstOrDefault(t => t.Id == subTypeId);
             if (subType == null)
             {
                 throw new SubscriptionTypeNotFoundException(subTypeId);
@@ -81,7 +80,10 @@ namespace VectorSite.BL.Services
 
             SubTypeResponseDTO subType = mapper.Map<SubTypeResponseDTO>(sub.SubType);
 
-            return mapper.Map<SubWithDetailsResponseDTO>(subType);
+            SubWithDetailsResponseDTO subWithDetails = mapper.Map<SubWithDetailsResponseDTO>(sub);
+            subWithDetails.SubType = subType;
+
+            return subWithDetails;
         }
 
         //TODO: Змінити це чи взагалі видалити, бо херня (Та й нахер треба)

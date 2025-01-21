@@ -1,14 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper.QueryableExtensions;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response;
 using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;
 using VectorSite.DL.Models;
+using System.Diagnostics;
 
 namespace VectorSite.BL.Services
 {
     public class SubscriptionTypeService(
-        IDbContext context
+        IDbContext context,
+        IMapper mapper
     ) : ISubscriptionTypeService
     {
         public void Create(SubTypeCreateRequestDTO type)
@@ -28,18 +34,18 @@ namespace VectorSite.BL.Services
             context.SaveChanges();
         }
 
-        public List<SubscriptionType> GetAll()
+        public List<SubTypeResponseDTO> GetAll()
         {
             return context.SubscriptionTypes
-                .Include(t => t.Subscriptions)
-                .Include(t => t.Payments)
                 .Include(t => t.Prices)
+                .ProjectTo<SubTypeResponseDTO>(mapper.ConfigurationProvider)
                 .ToList();
         }
 
-        public SubscriptionType GetById(int id)
+        public SubTypeResponseDTO GetById(int id)
         {
             var type = context.SubscriptionTypes
+                .Include(t => t.Prices)
                 .First(type => type.Id == id);
 
             if (type == null)
@@ -47,7 +53,7 @@ namespace VectorSite.BL.Services
                 throw new SubscriptionTypeNotFoundException(id);
             }
 
-            return type;
+            return mapper.Map<SubTypeResponseDTO>(type);
         }
 
         public void Update(int typeId, SubTypeUpdateRequestDTO updateDTO)

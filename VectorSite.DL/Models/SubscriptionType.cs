@@ -12,13 +12,10 @@ namespace VectorSite.DL.Models
 
         public int Days { get; set; }
 
-   
         public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 
-  
         public List<SubscriptionPrice> Prices { get; set; } = new List<SubscriptionPrice>();
 
-  
         public List<Payment> Payments { get; set; } = new List<Payment>();
     }
 }

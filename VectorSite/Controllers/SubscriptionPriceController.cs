@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VectorSite.BL.DTO.ExceptionsDTO;
 using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL.Exceptions.SubscriptionPriceExceptions;
 using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;
@@ -55,7 +56,7 @@ namespace VectorSite.Controllers
         {
             try
             {
-                var prices = subscriptionPriceService.GetAll();
+                List<SubPriceWithDetailsResponseDTO> prices = subscriptionPriceService.GetAll();
                 return Ok(prices);
             }
             catch (Exception ex)
@@ -69,7 +70,7 @@ namespace VectorSite.Controllers
         {
             try
             {
-                var price = subscriptionPriceService.GetById(priceId);
+                SubPriceWithDetailsResponseDTO price = subscriptionPriceService.GetById(priceId);
                 return Ok(price);
             }
             catch (Exception ex)

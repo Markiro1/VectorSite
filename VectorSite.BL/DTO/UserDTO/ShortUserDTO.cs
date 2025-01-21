@@ -14,10 +14,7 @@ namespace VectorSite.BL.DTO.UserDTO
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<User, ShortUserDTO>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber));
+            profile.CreateMap<User, ShortUserDTO>();
         }
     }
 }

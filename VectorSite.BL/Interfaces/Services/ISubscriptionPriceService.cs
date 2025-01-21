@@ -1,4 +1,5 @@
 ﻿using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response;
 using VectorSite.DL.Models;
 
 namespace VectorSite.BL.Interfaces.Services
@@ -9,8 +10,8 @@ namespace VectorSite.BL.Interfaces.Services
 
         void Update(int priceId, SubPriceUpdateRequestDTO priceDTO);
 
-        SubscriptionPrice GetById(int priceId);
+        SubPriceWithDetailsResponseDTO GetById(int priceId);
 
-        List<SubscriptionPrice> GetAll();
+        List<SubPriceWithDetailsResponseDTO> GetAll();
     }
 }

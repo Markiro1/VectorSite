@@ -1,13 +1,14 @@
 ﻿using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response;
 using VectorSite.DL.Models;
 
 namespace VectorSite.BL.Interfaces.Services
 {
     public interface ISubscriptionTypeService
     {
-        SubscriptionType GetById(int id);
+        SubTypeResponseDTO GetById(int id);
 
-        List<SubscriptionType> GetAll();
+        List<SubTypeResponseDTO> GetAll();
 
         void Create(SubTypeCreateRequestDTO type);
 
