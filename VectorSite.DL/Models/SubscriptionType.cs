@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace VectorSite.DL.Models
 {
@@ -15,7 +14,5 @@ namespace VectorSite.DL.Models
         public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 
         public List<SubscriptionPrice> Prices { get; set; } = new List<SubscriptionPrice>();
-
-        public List<Payment> Payments { get; set; } = new List<Payment>();
     }
 }

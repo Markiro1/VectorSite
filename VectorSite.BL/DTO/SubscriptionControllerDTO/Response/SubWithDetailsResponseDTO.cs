@@ -7,7 +7,9 @@ namespace VectorSite.BL.DTO.SubscriptionControllerDTO.Response
 {
     public class SubWithDetailsResponseDTO : IMapWith<Subscription>
     {
-        public SubTypeResponseDTO? SubType { get; set; }
+        public string TypeName { get; set; }
+
+        public decimal Price { get; set; }
 
         public bool IsCancelled { get; set; } = false;
 

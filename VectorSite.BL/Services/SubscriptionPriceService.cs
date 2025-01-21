@@ -89,5 +89,7 @@ namespace VectorSite.BL.Services
 
             context.SaveChanges();
         }
+
+        // TODO зробити метод який отримує поточну ціну по id type
     }
 }

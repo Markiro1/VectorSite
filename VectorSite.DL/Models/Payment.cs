@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VectorSite.DL.Models
 {
@@ -7,10 +8,13 @@ namespace VectorSite.DL.Models
         [Key]
         public int Id { get; set; }
 
-        public User User { get; set; } = null!;
+        public int SubscriptionId { get; set; }
+
+        public Subscription Subscription { get; set; } = null!;
+
+        //TODO: Нормальні статуси
+        public string Status { get; set; } = null!;
 
         public DateTime Time { get; set; } = DateTime.Now;
-
-        public SubscriptionType Type { get; set; } = null!;
     }
 }

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VectorSite.Migrations
 {
     /// <inheritdoc />
-    public partial class Primary : Migration
+    public partial class Version1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -172,32 +172,6 @@ namespace VectorSite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TypeId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payments_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Payments_SubscriptionTypes_TypeId",
-                        column: x => x.TypeId,
-                        principalTable: "SubscriptionTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SubscriptionPrices",
                 columns: table => new
                 {
@@ -228,7 +202,6 @@ namespace VectorSite.Migrations
                     SubTypeId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     IsCancelled = table.Column<bool>(type: "boolean", nullable: false),
-                    IsPayed = table.Column<bool>(type: "boolean", nullable: false),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -244,6 +217,27 @@ namespace VectorSite.Migrations
                         name: "FK_Subscriptions_SubscriptionTypes_SubTypeId",
                         column: x => x.SubTypeId,
                         principalTable: "SubscriptionTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SubscriptionId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Subscriptions_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscriptions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -286,14 +280,10 @@ namespace VectorSite.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_TypeId",
+                name: "IX_Payments_SubscriptionId",
                 table: "Payments",
-                column: "TypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_UserId",
-                table: "Payments",
-                column: "UserId");
+                column: "SubscriptionId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubscriptionPrices_TypeId",
@@ -336,10 +326,10 @@ namespace VectorSite.Migrations
                 name: "SubscriptionPrices");
 
             migrationBuilder.DropTable(
-                name: "Subscriptions");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

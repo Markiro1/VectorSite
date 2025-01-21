@@ -12,8 +12,8 @@ using VectorSite;
 namespace VectorSite.Migrations
 {
     [DbContext(typeof(NpgsqlDbContext))]
-    [Migration("20250120103554_Primary")]
-    partial class Primary
+    [Migration("20250121211116_Version1")]
+    partial class Version1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,20 +165,20 @@ namespace VectorSite.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("SubscriptionId")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
@@ -195,9 +195,6 @@ namespace VectorSite.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsCancelled")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsPayed")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("StartDate")
@@ -382,19 +379,13 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.DL.Models.Payment", b =>
                 {
-                    b.HasOne("VectorSite.DL.Models.SubscriptionType", "Type")
-                        .WithMany("Payments")
-                        .HasForeignKey("TypeId")
+                    b.HasOne("VectorSite.DL.Models.Subscription", "Subscription")
+                        .WithOne("Payment")
+                        .HasForeignKey("VectorSite.DL.Models.Payment", "SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VectorSite.DL.Models.User", "User")
-                        .WithMany("Payment")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Type");
-
-                    b.Navigation("User");
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("VectorSite.DL.Models.Subscription", b =>
@@ -425,10 +416,13 @@ namespace VectorSite.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("VectorSite.DL.Models.Subscription", b =>
+                {
+                    b.Navigation("Payment");
+                });
+
             modelBuilder.Entity("VectorSite.DL.Models.SubscriptionType", b =>
                 {
-                    b.Navigation("Payments");
-
                     b.Navigation("Prices");
 
                     b.Navigation("Subscriptions");
@@ -436,8 +430,6 @@ namespace VectorSite.Migrations
 
             modelBuilder.Entity("VectorSite.DL.Models.User", b =>
                 {
-                    b.Navigation("Payment");
-
                     b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618

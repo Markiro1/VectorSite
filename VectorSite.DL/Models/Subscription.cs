@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace VectorSite.DL.Models
 {
@@ -13,7 +15,7 @@ namespace VectorSite.DL.Models
 
         public bool IsCancelled { get; set; } = false;
 
-        public bool IsPayed { get; set; } = false;
+        public Payment? Payment { get; set; } = null!;
 
         public DateTime? StartDate { get; set; } = DateTime.Now.ToUniversalTime();
 

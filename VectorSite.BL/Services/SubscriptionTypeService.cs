@@ -21,11 +21,11 @@ namespace VectorSite.BL.Services
         {
             var newType = new SubscriptionType
             {
-                Name = type.Name.ToUpper(),
+                Name = type.Name,
                 Days = type.Days,
             };
 
-            if (context.SubscriptionTypes.Any(t => t.Name.Equals(type.Name)))
+            if (context.SubscriptionTypes.Any(t => t.Name.ToUpper() == newType.Name.ToUpper()))
             {
                 throw new SubscriptionTypeAlreadyExistException(type.Name);
             }

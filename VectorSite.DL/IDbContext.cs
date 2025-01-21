@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using VectorSite.DL.Models;
 
 namespace VectorSite.DL
@@ -17,7 +16,5 @@ namespace VectorSite.DL
         public DbSet<Payment> Payments { get; set; }
 
         public int SaveChanges();
-
-        public IDbContextTransaction BeginTransaction();
     }
 }

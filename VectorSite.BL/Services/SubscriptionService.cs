@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
 using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.SubscriptionExceptios;
@@ -50,14 +49,16 @@ namespace VectorSite.BL.Services
             List<Subscription> subs = context?.Subscriptions
                 .Include(s => s.SubType)
                 .Include(s => s.User)
-                .ToList() ?? [];
+                .ToList() ?? new();
 
+
+            // TODO: ProjectTo
             List<SubResponseDTO> subDTOs = subs.Select(sub => new SubResponseDTO
             {
                 TypeId = sub.SubType.Id,
                 UserId = sub.User.Id,
                 IsCancelled = sub.IsCancelled,
-                IsPayed = sub.IsPayed,
+                IsPayed = sub.Payment != null,
                 StartDate = sub.StartDate,
                 EndDate = sub.EndDate,
             }).ToList();
@@ -65,23 +66,30 @@ namespace VectorSite.BL.Services
             return subDTOs;
         }
 
+        // TODO: Check this one more time ACTIVE
         public SubWithDetailsResponseDTO GetByUserId(string userId)
         {
-            var sub = context.Subscriptions
+            var currSub = context.Subscriptions
+                .Include(s => s.User)
                 .Include(s => s.SubType)
-                    .ThenInclude(t => t.Payments)
-                .Include(s => s.SubType)
-                    .ThenInclude(p => p.Prices)
-                .FirstOrDefault(s => s.User.Id.Equals(userId));
-            if (sub == null)
+                    .ThenInclude(t => t.Prices)
+                .Where(s => s.User.Id == userId)
+                .Where(s => DateTime.Now.ToUniversalTime() > s.StartDate && DateTime.Now.ToUniversalTime() < s.EndDate)
+                .FirstOrDefault(s => s.User.Id == userId);
+
+            if (currSub == null)
             {
                 throw new SubscriptionNotFoundException(userId);
             }
 
-            SubTypeResponseDTO subType = mapper.Map<SubTypeResponseDTO>(sub.SubType);
-
-            SubWithDetailsResponseDTO subWithDetails = mapper.Map<SubWithDetailsResponseDTO>(sub);
-            subWithDetails.SubType = subType;
+            SubWithDetailsResponseDTO subWithDetails = new()
+            {
+                StartDate = currSub.StartDate,
+                EndDate = currSub.EndDate,
+                IsCancelled = currSub.IsCancelled,
+                IsPayed = currSub.Payment != null,
+                Price = 0 // TODO Price
+            };
 
             return subWithDetails;
         }
@@ -101,8 +109,7 @@ namespace VectorSite.BL.Services
             if (updateDTO.IsCancelled.HasValue)
                 sub.IsCancelled = updateDTO.IsCancelled.Value;
 
-            if (updateDTO.IsPayed.HasValue)
-                sub.IsPayed = updateDTO.IsPayed.Value;
+            // TODO Payment
 
             if (updateDTO.StartDate.HasValue)
                 sub.StartDate = updateDTO.StartDate.Value;

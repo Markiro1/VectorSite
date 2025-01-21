@@ -13,6 +13,7 @@ namespace VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response
 
         public int Days { get; set; }
 
+        // TODO I don`t think we need price here
         public List<SubPriceResponseDTO>? Prices { get; set; }
 
         public void Mapping(Profile profile)
