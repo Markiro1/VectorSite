@@ -61,9 +61,11 @@ namespace VectorSite.BL.Services
                 .Include(s => s.User)
                 .Include(s => s.SubType)
                     .ThenInclude(t => t.Prices)
-                //.Where(s => !s.IsCancelled) // Uncomment in future
+                .Include(s => s.Payment)
+                .Where(s => !s.IsCancelled)
                 .Where(s => s.User.Id == userId)
-                .Where(s => DateTime.Now.ToUniversalTime() > s.StartDate && DateTime.Now.ToUniversalTime() < s.EndDate)
+                .Where(s => DateTime.UtcNow >= s.StartDate && DateTime.UtcNow < s.EndDate)
+                .Where(s => s.Payment != null)
                 .FirstOrDefault(s => s.User.Id == userId);
 
             if (currSub == null)

@@ -12,6 +12,8 @@ namespace VectorSite.DL.Models
 
         public Subscription Subscription { get; set; } = null!;
 
+        public decimal Price { get; set; } = decimal.Zero;
+
         //TODO: Нормальні статуси
         public string Status { get; set; } = null!;
 
