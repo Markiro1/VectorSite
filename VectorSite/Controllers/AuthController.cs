@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VectorSite.BL.DTO.AuthControllerDTO.Request;
+using VectorSite.BL.DTO.AuthServiceDTO.Request;
+using VectorSite.BL.DTO.ExceptionsDTO;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL.Models;
 
@@ -33,7 +34,7 @@ namespace VectorSite.Controllers
             else
             {
                 logger.LogError(message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ExceptionMessageDTO(message));
             }
         }
 
@@ -58,7 +59,7 @@ namespace VectorSite.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ExceptionMessageDTO(ex.Message));
             }
 
         }

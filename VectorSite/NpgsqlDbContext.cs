@@ -21,6 +21,8 @@ namespace VectorSite
 
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<Checkout> Checkouts { get; set; }
+
         public IDbContextTransaction BeginTransaction()
         {
             return this.Database.BeginTransaction();

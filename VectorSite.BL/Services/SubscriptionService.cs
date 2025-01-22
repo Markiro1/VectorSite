@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
-using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
+using VectorSite.BL.DTO.SubscriptionServiceDTO.Request;
+using VectorSite.BL.DTO.SubscriptionServiceDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.SubscriptionExceptios;
@@ -60,7 +60,6 @@ namespace VectorSite.BL.Services
             var currSub = context.Subscriptions
                 .Include(s => s.User)
                 .Include(s => s.SubType)
-                    .ThenInclude(t => t.Prices)
                 .Include(s => s.Payment)
                 .Where(s => !s.IsCancelled)
                 .Where(s => s.User.Id == userId)
@@ -73,16 +72,7 @@ namespace VectorSite.BL.Services
                 throw new SubscriptionNotFoundException(userId);
             }
 
-            SubWithDetailsResponseDTO subWithDetails = new()
-            {
-                StartDate = currSub.StartDate,
-                EndDate = currSub.EndDate,
-                IsCancelled = currSub.IsCancelled,
-                IsPayed = currSub.Payment != null,
-                Price = 0 // TODO Price
-            };
-
-            return subWithDetails;
+            return mapper.Map<SubWithDetailsResponseDTO>(currSub);
         }
 
         //TODO: Змінити це чи взагалі видалити, бо херня (Та й нахер треба)
@@ -102,19 +92,6 @@ namespace VectorSite.BL.Services
 
             if (updateDTO.IsCancelled.HasValue)
                 sub.IsCancelled = updateDTO.IsCancelled.Value;
-
-            // TODO Payment
-            if (sub.Payment != null)
-            {
-                if (updateDTO.IsPayed.HasValue)
-                {
-                    sub.Payment.Status = "PAID";
-                }
-                else
-                {
-                    sub.Payment.Status = "UNPAID";
-                }
-            }
 
             if (updateDTO.StartDate.HasValue)
                 sub.StartDate = updateDTO.StartDate.Value;

@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
-using System.Text.Json.Serialization;
 using VectorSite;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.BL.Services;
@@ -75,6 +73,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<ISubscriptionTypeService, SubscriptionTypeService>();
 builder.Services.AddScoped<ISubscriptionPriceService, SubscriptionPriceService>();
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+
 
 builder.Services.AddScoped<IMockupService, MockupService>();
 builder.Services.AddScoped<IAdminService, AdminService>();

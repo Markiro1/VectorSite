@@ -1,5 +1,5 @@
-﻿using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
-using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
+﻿using VectorSite.BL.DTO.SubscriptionServiceDTO.Request;
+using VectorSite.BL.DTO.SubscriptionServiceDTO.Response;
 
 namespace VectorSite.BL.Interfaces.Services
 {

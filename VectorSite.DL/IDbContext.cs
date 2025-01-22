@@ -15,6 +15,8 @@ namespace VectorSite.DL
 
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<Checkout> Checkouts { get; set; }
+
         public int SaveChanges();
     }
 }

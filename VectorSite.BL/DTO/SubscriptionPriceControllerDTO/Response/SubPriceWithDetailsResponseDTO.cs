@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response;
+using VectorSite.BL.DTO.SubscriptionTypeServiceDTO.Response;
 using VectorSite.DL.Common.Mappings;
 using VectorSite.DL.Models;
 

@@ -2,8 +2,8 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Response;
+using VectorSite.BL.DTO.SubscriptionTypeServiceDTO.Request;
+using VectorSite.BL.DTO.SubscriptionTypeServiceDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;

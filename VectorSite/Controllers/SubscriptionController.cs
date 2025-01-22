@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using VectorSite.BL.DTO.ExceptionsDTO;
-using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
-using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
+using VectorSite.BL.DTO.SubscriptionServiceDTO.Request;
+using VectorSite.BL.DTO.SubscriptionServiceDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 
 namespace VectorSite.Controllers

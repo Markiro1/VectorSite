@@ -1,4 +1,4 @@
-﻿using VectorSite.BL.DTO.AdminControllerDTO;
+﻿using VectorSite.BL.DTO.AdminServiceDTO;
 
 namespace VectorSite.BL.Interfaces.Services
 {

@@ -67,7 +67,6 @@ namespace VectorSite.Services
 
             return new Payment()
             {
-                Status = "Payed",
                 Subscription = sub,
                 SubscriptionId = sub.Id,
                 Price = sub.SubType.Prices.FirstOrDefault(p => paymentDate >= p.StartDate && paymentDate < p.EndDate)?.Price ?? 0,

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using VectorSite.BL.DTO.AdminControllerDTO;
+using VectorSite.BL.DTO.AdminServiceDTO;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL;
 using VectorSite.DL.Models;

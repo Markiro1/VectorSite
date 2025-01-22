@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VectorSite.BL.DTO.AdminControllerDTO;
+using VectorSite.BL.DTO.AdminServiceDTO;
 using VectorSite.BL.Interfaces.Services;
 
 namespace VectorSite.Controllers

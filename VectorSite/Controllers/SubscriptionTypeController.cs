@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VectorSite.BL.DTO.ExceptionsDTO;
-using VectorSite.BL.DTO.SubscriptionTypeControllerDTO.Request;
+using VectorSite.BL.DTO.SubscriptionTypeServiceDTO.Request;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL.Exceptions.SubscriptionTypeExceptions;
 
