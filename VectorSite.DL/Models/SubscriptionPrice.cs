@@ -11,8 +11,8 @@ namespace VectorSite.DL.Models
 
         public decimal Price { get; set; } = decimal.Zero;
 
-        public DateTime StartDate { get; set; } = DateTime.Now.ToUniversalTime();
+        public DateTime DateFrom { get; set; } = DateTime.Now.ToUniversalTime();
 
-        public DateTime EndDate { get; set; } = DateTime.Now.ToUniversalTime();
+        public DateTime DateTo { get; set; } = DateTime.Now.ToUniversalTime();
     }
 }

@@ -32,18 +32,23 @@ namespace VectorSite.BL.Services
                 throw new UserNotFoundException(userId);
             }
 
-            string subName = context.SubscriptionTypes.FirstOrDefault(t => t.Id == subTypeId)?
-                .Name ?? string.Empty;
+            SubscriptionType? subType = context.SubscriptionTypes.FirstOrDefault(t => t.Id == subTypeId);
 
-            if (string.IsNullOrEmpty(subName))
+            if (subType == null)
             {
                 throw new SubscriptionTypeNotFoundException(subTypeId);
+            } else
+            {
+                if (string.IsNullOrEmpty(subType.Name))
+                {
+                    throw new SubscriptionTypeNotFoundException(subTypeId);
+                }
             }
-
+           
             decimal price = context.SubscriptionPrices
                 .Include(p => p.Type)
                 .Where(p => p.Type.Id == subTypeId)
-                .Where(p => p.StartDate <= DateTime.UtcNow && p.EndDate > DateTime.UtcNow)
+                .Where(p => p.DateFrom <= DateTime.UtcNow && p.DateTo > DateTime.UtcNow)
                 .FirstOrDefault()?.Price ?? decimal.Zero;
 
             if (price == 0)
@@ -51,7 +56,7 @@ namespace VectorSite.BL.Services
                 throw new ArgumentException("Price cannot be zero");
             }
 
-            string description = $"Користувач:{user.UserName}; Оплата за: {subName}; Сума: {price}; Дата оплати: {DateTime.UtcNow};";
+            string description = $"Користувач:{user.UserName}; Оплата за: {subType.Name}; Сума: {price}; Дата оплати: {DateTime.UtcNow};";
 
             LiqPayData payData = new LiqPayData
             {
@@ -96,7 +101,8 @@ namespace VectorSite.BL.Services
             {
                 Amount = price,
                 Status = CheckoutStatuses.Waiting,
-                User = user
+                User = user,
+                SubType = subType
             };
 
             context.Checkouts.Add(checkout);

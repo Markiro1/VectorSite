@@ -41,7 +41,7 @@ namespace VectorSite.Extensions
                 }
             }
         }
-
+ 
         public static async Task GenerateMockupData(this WebApplication app)
         {
             using (var scope = app.Services.CreateScope())
@@ -61,8 +61,8 @@ namespace VectorSite.Extensions
                     await db.SubscriptionTypes.AddAsync(baseType);
                     await db.SubscriptionTypes.AddAsync(premiumType);
 
-                    await db.SubscriptionPrices.AddAsync(new SubscriptionPrice() { Price = 100, StartDate = DateTime.UtcNow.AddDays(-90), EndDate = DateTime.UtcNow.AddDays(90), Type = baseType });
-                    await db.SubscriptionPrices.AddAsync(new SubscriptionPrice() { Price = 400, StartDate = DateTime.UtcNow.AddDays(-90), EndDate = DateTime.UtcNow.AddDays(90), Type = premiumType });
+                    await db.SubscriptionPrices.AddAsync(new SubscriptionPrice() { Price = 100, DateFrom = DateTime.UtcNow.AddDays(-90), DateTo = DateTime.UtcNow.AddDays(90), Type = baseType });
+                    await db.SubscriptionPrices.AddAsync(new SubscriptionPrice() { Price = 400, DateFrom = DateTime.UtcNow.AddDays(-90), DateTo = DateTime.UtcNow.AddDays(90), Type = premiumType });
 
                     await db.SaveChangesAsync();
 

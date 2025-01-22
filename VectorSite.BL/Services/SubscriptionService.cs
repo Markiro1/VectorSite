@@ -63,7 +63,7 @@ namespace VectorSite.BL.Services
                 .Include(s => s.Payment)
                 .Where(s => !s.IsCancelled)
                 .Where(s => s.User.Id == userId)
-                .Where(s => DateTime.UtcNow >= s.StartDate && DateTime.UtcNow < s.EndDate)
+                .Where(s => DateTime.UtcNow >= s.DateFrom && DateTime.UtcNow < s.DateTo)
                 .Where(s => s.Payment != null)
                 .FirstOrDefault(s => s.User.Id == userId);
 
@@ -94,10 +94,10 @@ namespace VectorSite.BL.Services
                 sub.IsCancelled = updateDTO.IsCancelled.Value;
 
             if (updateDTO.StartDate.HasValue)
-                sub.StartDate = updateDTO.StartDate.Value;
+                sub.DateFrom = updateDTO.StartDate.Value;
 
             if (updateDTO.EndDate.HasValue)
-                sub.EndDate = updateDTO.EndDate.Value;
+                sub.DateTo = updateDTO.EndDate.Value;
 
             context.SaveChanges();
         }

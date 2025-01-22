@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace VectorSite.DL.Models
+﻿namespace VectorSite.DL.Models
 {
     public class Payment
     {

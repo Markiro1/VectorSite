@@ -25,8 +25,8 @@ namespace VectorSite.BL.Services
             {
                 Price = priceDTO.Price,
                 Type = type,
-                StartDate = priceDTO.StartDate,
-                EndDate = priceDTO.EndDate
+                DateFrom = priceDTO.StartDate,
+                DateTo = priceDTO.EndDate
             };
 
             context.SubscriptionPrices.Add(price);
@@ -81,10 +81,10 @@ namespace VectorSite.BL.Services
                 price.Price = priceDTO.Price.Value;
 
             if (priceDTO.StartDate.HasValue)
-                price.StartDate = priceDTO.StartDate.Value;
+                price.DateFrom = priceDTO.StartDate.Value;
 
             if (priceDTO.EndDate.HasValue)
-                price.EndDate = priceDTO.EndDate.Value;
+                price.DateTo = priceDTO.EndDate.Value;
 
             context.SaveChanges();
         }
@@ -95,9 +95,9 @@ namespace VectorSite.BL.Services
 
             decimal actualPrice = context.SubscriptionPrices
                 .Where(s => s.Type.Id == typeId
-                         && s.StartDate <= currentDate
-                         && s.EndDate > currentDate)
-                .OrderByDescending(s => s.StartDate)
+                         && s.DateFrom <= currentDate
+                         && s.DateTo > currentDate)
+                .OrderByDescending(s => s.DateFrom)
                 .FirstOrDefault()?.Price ?? decimal.Zero;
 
             return actualPrice;

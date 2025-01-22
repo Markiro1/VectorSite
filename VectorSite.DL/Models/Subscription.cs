@@ -19,8 +19,8 @@ namespace VectorSite.DL.Models
 
         public Payment? Payment { get; set; } = null!;
 
-        public DateTime? StartDate { get; set; } = DateTime.Now.ToUniversalTime();
+        public DateTime? DateFrom { get; set; } = DateTime.Now.ToUniversalTime();
 
-        public DateTime? EndDate { get; set; } = DateTime.Now.ToUniversalTime();
+        public DateTime? DateTo { get; set; } = DateTime.Now.ToUniversalTime();
     }
 }

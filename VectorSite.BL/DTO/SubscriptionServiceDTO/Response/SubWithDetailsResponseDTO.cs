@@ -11,7 +11,7 @@ namespace VectorSite.BL.DTO.SubscriptionServiceDTO.Response
 
         public bool IsCancelled { get; set; } = false;
 
-        public SimplePaymentResponseDTO Payment { get; set; } = null!;
+        public PaymentSimpleResponseDTO Payment { get; set; } = null!;
 
         public DateTime? StartDate { get; set; }
 

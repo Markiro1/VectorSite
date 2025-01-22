@@ -1,4 +1,5 @@
-﻿using VectorSite.DL.Common.Mappings;
+﻿using AutoMapper;
+using VectorSite.DL.Common.Mappings;
 using VectorSite.DL.Models;
 
 namespace VectorSite.BL.DTO.SubscriptionServiceDTO.Response
@@ -11,10 +12,15 @@ namespace VectorSite.BL.DTO.SubscriptionServiceDTO.Response
 
         public bool IsCancelled { get; set; } = false;
 
-        public bool IsPayed { get; set; } = false;
+        public DateTime? DateFrom { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        public DateTime? DateTo { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<Subscription, SubResponseDTO>()
+                .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.SubType.Id))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+        }
     }
 }

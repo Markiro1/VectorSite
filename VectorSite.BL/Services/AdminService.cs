@@ -23,8 +23,8 @@ namespace VectorSite.BL.Services
 
             foreach (var user in users)
             {
-                var userCurrentSub = user.Subscriptions.FirstOrDefault(s => DateTime.UtcNow >= s.StartDate 
-                        && DateTime.UtcNow < s.EndDate 
+                var userCurrentSub = user.Subscriptions.FirstOrDefault(s => DateTime.UtcNow >= s.DateFrom 
+                        && DateTime.UtcNow < s.DateTo 
                         && !s.IsCancelled 
                         && s.Payment != null);
 
@@ -35,7 +35,7 @@ namespace VectorSite.BL.Services
                     Email = user.Email ?? "Немає",
                     Role = (await userManager.GetRolesAsync(user)).FirstOrDefault() ?? "Немає",
                     CurrentSubscription = userCurrentSub?.SubType?.Name ?? "Немає",
-                    SubscriptionEndDate = userCurrentSub?.EndDate?.ToString()
+                    SubscriptionEndDate = userCurrentSub?.DateTo?.ToString()
                 });
             }
 
