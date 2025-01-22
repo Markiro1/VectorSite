@@ -63,13 +63,15 @@ namespace VectorSite.Services
         public Payment GeneratePayment(Subscription sub, bool isActive)
         {
             Random random = new Random();
+            var paymentDate = isActive ? DateTime.UtcNow.AddDays(random.Next(-20, 0)) : DateTime.UtcNow.AddDays(random.Next(-90, 90));
 
             return new Payment()
             {
                 Status = "Payed",
                 Subscription = sub,
                 SubscriptionId = sub.Id,
-                Date = isActive ? DateTime.UtcNow.AddDays(random.Next(-20, 0)) : DateTime.UtcNow.AddDays(random.Next(-90, 90)),
+                Price = sub.SubType.Prices.FirstOrDefault(p => paymentDate >= p.StartDate && paymentDate < p.EndDate)?.Price ?? 0,
+                Date = paymentDate,
             };
         }
 
