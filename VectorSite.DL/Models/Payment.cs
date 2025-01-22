@@ -15,6 +15,6 @@ namespace VectorSite.DL.Models
         //TODO: Нормальні статуси
         public string Status { get; set; } = null!;
 
-        public DateTime Time { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

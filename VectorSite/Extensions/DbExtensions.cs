@@ -55,8 +55,10 @@ namespace VectorSite.Extensions
                     await roleManager.CreateAsync(new IdentityRole("Admin"));
                     await roleManager.CreateAsync(new IdentityRole("User"));
 
-                    await db.SubscriptionTypes.AddAsync(new SubscriptionType() { Name = "BASE", Days = 30 });
-                    await db.SubscriptionTypes.AddAsync(new SubscriptionType() { Name = "PREMIUM", Days = 30 });
+                    await db.SubscriptionTypes.AddAsync(new SubscriptionType() { Name = "Base", Days = 30 });
+                    await db.SubscriptionTypes.AddAsync(new SubscriptionType() { Name = "Premium", Days = 30 });
+
+                    await db.SaveChangesAsync();
 
                     for (var i = 0; i < 10; i++)
                     {

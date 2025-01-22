@@ -11,7 +11,7 @@ namespace VectorSite.Controllers
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers(int page)
         {
-            var usersList = await adminService.GetAllUsers(page);
+            var usersList = await adminService.GetAllAdminShortUsers(page);
 
             return Ok(usersList);
         }
