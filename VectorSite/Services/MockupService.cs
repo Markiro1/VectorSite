@@ -1,22 +1,76 @@
 ﻿using System.Text;
 using VectorSite.BL.Interfaces.Services;
+using VectorSite.DL;
 using VectorSite.DL.Models;
 
 namespace VectorSite.Services
 {
-    public class MockupService : IMockupService
+    public class MockupService(IDbContext context) : IMockupService
     {
         public (User User, string Password, string Role) GenerateUser()
         {
             string guid = Guid.NewGuid().ToString();
 
-            return (new User()
+            User user = new User()
             {
                 Id = guid,
                 Email = GenerateEmail(guid),
                 UserName = GenerateUserName(guid),
-                PhoneNumber = GeneratePhone()
-            }, GeneratePassword(guid), GenerateRole());
+                PhoneNumber = GeneratePhone(),
+            };
+            user.Subscriptions = GenerateSubscriptions(1, user, true);
+
+            return (user, GeneratePassword(guid), GenerateRole());
+        }
+
+        public List<Subscription> GenerateSubscriptions(int numOfSubs, User user, bool isCompleteActive)
+        {
+            var subs = new List<Subscription>();
+
+            for (int i = 0; i < numOfSubs; i++)
+            {
+                subs.Add(GenerateSubscription(user, isCompleteActive));
+            }
+
+            return subs;
+        }
+
+        public Subscription GenerateSubscription(User user, bool isCompleteActive)
+        {
+            Random random = new Random();
+            Subscription sub = new Subscription();
+            sub.User = user;
+
+            var subTypes = context.SubscriptionTypes.ToList();
+
+            sub.SubType = subTypes[random.Next(subTypes.Count)];
+            
+            if(random.Next(2) == 1 || isCompleteActive)
+            {
+                sub.Payment = GeneratePayment(sub, isCompleteActive);
+                sub.StartDate = sub.Payment.Date;
+                sub.EndDate = sub.StartDate?.AddDays(sub.SubType.Days);
+            }
+
+            if (random.Next(2) == 1 && !isCompleteActive)
+            {
+                sub.IsCancelled = true;
+            }
+
+            return sub;
+        }
+
+        public Payment GeneratePayment(Subscription sub, bool isActive)
+        {
+            Random random = new Random();
+
+            return new Payment()
+            {
+                Status = "Payed",
+                Subscription = sub,
+                SubscriptionId = sub.Id,
+                Date = isActive ? DateTime.UtcNow.AddDays(random.Next(-20, 0)) : DateTime.UtcNow.AddDays(random.Next(-90, 90)),
+            };
         }
 
         public string GenerateEmail(string guid)
