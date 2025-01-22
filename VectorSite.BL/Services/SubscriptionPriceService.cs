@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
 using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Request;
 using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response;
 using VectorSite.BL.Interfaces.Services;
@@ -90,6 +89,18 @@ namespace VectorSite.BL.Services
             context.SaveChanges();
         }
 
-        // TODO зробити метод який отримує поточну ціну по id type
+        public decimal GetActualPrice(int typeId)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+
+            decimal actualPrice = context.SubscriptionPrices
+                .Where(s => s.Type.Id == typeId
+                         && s.StartDate <= currentDate
+                         && s.EndDate > currentDate)
+                .OrderByDescending(s => s.StartDate)
+                .FirstOrDefault()?.Price ?? decimal.Zero;
+
+            return actualPrice;
+        }
     }
 }

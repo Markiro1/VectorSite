@@ -11,6 +11,8 @@ namespace VectorSite.DL.Models
 
         public SubscriptionType SubType { get; set; } = null!;
 
+        public virtual int SubTypeId { get; set; }
+
         public User User { get; set; } = null!;
 
         public bool IsCancelled { get; set; } = false;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using VectorSite.BL.DTO.SubscriptionControllerDTO.Request;
 using VectorSite.BL.DTO.SubscriptionControllerDTO.Response;
@@ -13,7 +14,6 @@ namespace VectorSite.BL.Services
 {
     public class SubscriptionService(
         IUserService userService,
-        ISubscriptionTypeService subscriptionTypeService,
         IDbContext context,
         IMapper mapper
     ) : ISubscriptionService
@@ -46,33 +46,22 @@ namespace VectorSite.BL.Services
 
         public List<SubResponseDTO> GetAllSubs()
         {
-            List<Subscription> subs = context?.Subscriptions
-                .Include(s => s.SubType)
+            List<SubResponseDTO> subDTOs = context.Subscriptions
                 .Include(s => s.User)
+                .Include(s => s.SubType)
+                .ProjectTo<SubResponseDTO>(mapper.ConfigurationProvider)
                 .ToList() ?? new();
-
-
-            // TODO: ProjectTo
-            List<SubResponseDTO> subDTOs = subs.Select(sub => new SubResponseDTO
-            {
-                TypeId = sub.SubType.Id,
-                UserId = sub.User.Id,
-                IsCancelled = sub.IsCancelled,
-                IsPayed = sub.Payment != null,
-                StartDate = sub.StartDate,
-                EndDate = sub.EndDate,
-            }).ToList();
 
             return subDTOs;
         }
 
-        // TODO: Check this one more time ACTIVE
         public SubWithDetailsResponseDTO GetByUserId(string userId)
         {
             var currSub = context.Subscriptions
                 .Include(s => s.User)
                 .Include(s => s.SubType)
                     .ThenInclude(t => t.Prices)
+                //.Where(s => !s.IsCancelled) // Uncomment in future
                 .Where(s => s.User.Id == userId)
                 .Where(s => DateTime.Now.ToUniversalTime() > s.StartDate && DateTime.Now.ToUniversalTime() < s.EndDate)
                 .FirstOrDefault(s => s.User.Id == userId);
@@ -98,7 +87,7 @@ namespace VectorSite.BL.Services
         public void Update(int subId, SubUpdateRequestDTO updateDTO)
         {
             var sub = context.Subscriptions
-                .Include(s => s.SubType)
+                .Include(s => s.Payment)
                 .FirstOrDefault(s => s.Id == subId);
 
             if (sub == null)
@@ -106,10 +95,24 @@ namespace VectorSite.BL.Services
                 throw new SubscriptionNotFoundException(subId);
             }
 
+            if (updateDTO.SubTypeId.HasValue)
+                sub.SubTypeId = updateDTO.SubTypeId.Value;
+
             if (updateDTO.IsCancelled.HasValue)
                 sub.IsCancelled = updateDTO.IsCancelled.Value;
 
             // TODO Payment
+            if (sub.Payment != null)
+            {
+                if (updateDTO.IsPayed.HasValue)
+                {
+                    sub.Payment.Status = "PAID";
+                }
+                else
+                {
+                    sub.Payment.Status = "UNPAID";
+                }
+            }
 
             if (updateDTO.StartDate.HasValue)
                 sub.StartDate = updateDTO.StartDate.Value;

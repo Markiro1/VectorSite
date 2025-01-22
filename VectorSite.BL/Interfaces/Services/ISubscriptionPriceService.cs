@@ -1,6 +1,5 @@
 ﻿using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Request;
 using VectorSite.BL.DTO.SubscriptionPriceControllerDTO.Response;
-using VectorSite.DL.Models;
 
 namespace VectorSite.BL.Interfaces.Services
 {
@@ -13,5 +12,7 @@ namespace VectorSite.BL.Interfaces.Services
         SubPriceWithDetailsResponseDTO GetById(int priceId);
 
         List<SubPriceWithDetailsResponseDTO> GetAll();
+
+        decimal GetActualPrice(int typeId);
     }
 }

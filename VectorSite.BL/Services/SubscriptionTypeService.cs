@@ -61,6 +61,8 @@ namespace VectorSite.BL.Services
             var type = GetById(typeId);
 
             type.Days = updateDTO.Days;
+            type.Name = updateDTO.Name;
+
             context.SaveChanges();
         }
     }
