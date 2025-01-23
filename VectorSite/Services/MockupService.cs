@@ -48,7 +48,7 @@ namespace VectorSite.Services
             if(random.Next(2) == 1 || isCompleteActive)
             {
                 sub.Payment = GeneratePayment(sub, isCompleteActive);
-                sub.DateFrom = sub.Payment.Date;
+                sub.DateFrom = sub.Payment.CreatedAt;
                 sub.DateTo = sub.DateFrom?.AddDays(sub.SubType.Days);
             }
 
@@ -70,7 +70,7 @@ namespace VectorSite.Services
                 Subscription = sub,
                 SubscriptionId = sub.Id,
                 Price = sub.SubType.Prices.FirstOrDefault(p => paymentDate >= p.DateFrom && paymentDate < p.DateTo)?.Price ?? 0,
-                Date = paymentDate,
+                CreatedAt = paymentDate,
             };
         }
 

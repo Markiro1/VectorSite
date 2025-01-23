@@ -4,7 +4,6 @@ using VectorSite.BL.DTO.PaymentServiceDTO.Response;
 using VectorSite.BL.Interfaces.Services;
 using VectorSite.DL.Exceptions.CheckoutExceptions;
 using VectorSite.DL.Exceptions.PaymentExceptions;
-using VectorSite.DL.Models;
 
 namespace VectorSite.Controllers
 {

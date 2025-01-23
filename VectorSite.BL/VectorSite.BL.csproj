@@ -14,4 +14,8 @@
     <Folder Include="DTO\PaymentServiceDTO\Request\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
+  </ItemGroup>
+
 </Project>

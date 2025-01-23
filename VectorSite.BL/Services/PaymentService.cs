@@ -34,7 +34,7 @@ namespace VectorSite.BL.Services
             {
                 Id = checkoutId, // TODO Через те, що зараз вже створені payments виникає помилка, что key is cannot be dublicate, тому що checkoutId = 1, а у нас в бд вже є payment з id = 1
                 Price = waitingCheckout.Amount,
-                Date = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
             };
             context.Payments.Add(payment);
 
@@ -48,13 +48,12 @@ namespace VectorSite.BL.Services
                 User = waitingCheckout.User,
                 IsCancelled = false,
                 Payment = payment,
-                DateFrom = DateTime.UtcNow,
-                DateTo = DateTime.UtcNow.AddDays(subTypeDurationDays)
+                DateFrom = payment.CreatedAt,
+                DateTo = payment.CreatedAt.AddDays(subTypeDurationDays)
             };
             context.Subscriptions.Add(subscription);
 
             // Set subscription to payment
-            payment.Subscription = subscription;
             payment.SubscriptionId = subscription.Id;
 
             waitingCheckout.Status = CheckoutStatuses.Success;
